@@ -1,4 +1,4 @@
-package com.dto;
+package com.zippy.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

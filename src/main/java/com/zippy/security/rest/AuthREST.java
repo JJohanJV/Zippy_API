@@ -1,14 +1,15 @@
-package com.rest;
+package com.zippy.security.rest;
 
-import com.document.RefreshToken;
-import com.document.User;
-import com.dto.LoginDTO;
-import com.dto.SignupDTO;
-import com.dto.TokenDTO;
-import com.jwt.JwtHelper;
-import com.repository.RefreshTokenRepository;
-import com.repository.UserRepository;
-import com.service.UserService;
+import com.zippy.security.document.Role;
+import com.zippy.security.document.RefreshToken;
+import com.zippy.security.document.User;
+import com.zippy.security.dto.LoginDTO;
+import com.zippy.security.dto.SignupDTO;
+import com.zippy.security.dto.TokenDTO;
+import com.zippy.security.jwt.JwtHelper;
+import com.zippy.security.repository.RefreshTokenRepository;
+import com.zippy.security.repository.UserRepository;
+import com.zippy.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -61,7 +62,14 @@ public class AuthREST {
     @PostMapping("signup")
     @Transactional
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto) {
-        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+        Role userRole;
+        try {
+            userRole = Role.valueOf(dto.getRole().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("El valor del campo 'role' no es válido");
+        }
+        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getRole());
+
         userRepository.save(user);
 
         RefreshToken refreshToken = new RefreshToken();

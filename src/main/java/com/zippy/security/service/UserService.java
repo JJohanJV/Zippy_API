@@ -1,7 +1,7 @@
-package com.service;
+package com.zippy.security.service;
 
-import com.document.User;
-import com.repository.UserRepository;
+import com.zippy.security.document.User;
+import com.zippy.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

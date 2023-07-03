@@ -1,4 +1,4 @@
-package com.document;
+package com.zippy.security.document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -26,6 +26,9 @@ public class User implements UserDetails {
     @JsonIgnore
     @NonNull
     private String password;
+    @NonNull
+    private String role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.EMPTY_LIST;
@@ -40,6 +43,8 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+    public String getRole() {return role;}
 
     @Override
     public boolean isAccountNonExpired() {

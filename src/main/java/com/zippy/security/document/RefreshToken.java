@@ -1,4 +1,4 @@
-package com.document;
+package com.zippy.security.document;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

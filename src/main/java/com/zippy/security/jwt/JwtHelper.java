@@ -1,12 +1,12 @@
-package com.jwt;
+package com.zippy.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.document.RefreshToken;
-import com.document.User;
+import com.zippy.security.document.RefreshToken;
+import com.zippy.security.document.User;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,12 +19,15 @@ import java.util.Optional;
 public class JwtHelper {
     static final String issuer = "MyApp";
 
+    private long accessTokenExpirationMs;
+    private long refreshTokenExpirationMs;
+
     private Algorithm accessTokenAlgorithm;
     private Algorithm refreshTokenAlgorithm;
     private JWTVerifier accessTokenVerifier;
     private JWTVerifier refreshTokenVerifier;
 
-    public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("${refreshTokenSecret}") String refreshTokenSecret, @Value("${com.refreshTokenExpirationDays}") int refreshTokenExpirationDays, @Value("${com.accessTokenExpirationMinutes}") int accessTokenExpirationMinutes) {
+    public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("${refreshTokenSecret}") String refreshTokenSecret, @Value("${com.zippy.security.refreshTokenExpirationDays}") int refreshTokenExpirationDays, @Value("${com.zippy.security.accessTokenExpirationMinutes}") int accessTokenExpirationMinutes) {
         accessTokenExpirationMs = (long) accessTokenExpirationMinutes * 60 * 1000;
         refreshTokenExpirationMs = (long) refreshTokenExpirationDays * 24 * 60 * 60 * 1000;
         accessTokenAlgorithm = Algorithm.HMAC512(accessTokenSecret);

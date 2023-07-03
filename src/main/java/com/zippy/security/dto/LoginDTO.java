@@ -1,4 +1,4 @@
-package com.dto;
+package com.zippy.security.dto;
 
 import lombok.Getter;
 import lombok.Setter;

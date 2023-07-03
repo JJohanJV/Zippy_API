@@ -1,7 +1,7 @@
-package com.rest;
+package com.zippy.security.rest;
 
-import com.document.User;
-import com.repository.UserRepository;
+import com.zippy.security.document.User;
+import com.zippy.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

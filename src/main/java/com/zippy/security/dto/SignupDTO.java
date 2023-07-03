@@ -1,4 +1,4 @@
-package com.dto;
+package com.zippy.security.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +20,6 @@ public class SignupDTO {
     @NotBlank
     @Size(min = 6, max = 60)
     private String password;
+    @NotBlank
+    private String role;
 }
