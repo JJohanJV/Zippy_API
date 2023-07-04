@@ -1,5 +1,6 @@
 package com.zippy.security.document;
 
+import com.zippy.security.document.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;
@@ -27,7 +28,7 @@ public class User implements UserDetails {
     @NonNull
     private String password;
     @NonNull
-    private String role;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -44,7 +45,7 @@ public class User implements UserDetails {
         return username;
     }
 
-    public String getRole() {return role;}
+    public Role getRole() {return role;}
 
     @Override
     public boolean isAccountNonExpired() {

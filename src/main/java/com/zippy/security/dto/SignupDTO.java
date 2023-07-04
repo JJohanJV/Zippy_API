@@ -7,6 +7,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.zippy.security.document.Role;
+
 @Getter
 @Setter
 public class SignupDTO {
@@ -20,6 +22,5 @@ public class SignupDTO {
     @NotBlank
     @Size(min = 6, max = 60)
     private String password;
-    @NotBlank
-    private String role;
+    private Role role;
 }

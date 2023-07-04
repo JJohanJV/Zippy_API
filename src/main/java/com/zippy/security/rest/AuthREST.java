@@ -1,7 +1,7 @@
 package com.zippy.security.rest;
 
-import com.zippy.security.document.Role;
 import com.zippy.security.document.RefreshToken;
+import com.zippy.security.document.Role;
 import com.zippy.security.document.User;
 import com.zippy.security.dto.LoginDTO;
 import com.zippy.security.dto.SignupDTO;
@@ -62,13 +62,11 @@ public class AuthREST {
     @PostMapping("signup")
     @Transactional
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto) {
-        Role userRole;
-        try {
-            userRole = Role.valueOf(dto.getRole().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("El valor del campo 'role' no es válido");
+        Role userRole = dto.getRole();
+        if (userRole == null) {
+            return ResponseEntity.badRequest().body("El campo 'role' es obligatorio");
         }
-        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getRole());
+        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), userRole);
 
         userRepository.save(user);
 

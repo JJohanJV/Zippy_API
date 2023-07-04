@@ -17,11 +17,13 @@ public class UserREST {
     @Autowired
     UserRepository userRepository;
 
+    // This endpoint returns the currently authenticated user
     @GetMapping("/me")
     public ResponseEntity<?> me(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(user);
     }
 
+    // This endpoint return the user by id, while the id is the same of the user.
     @GetMapping("/{id}")
     @PreAuthorize("#user.id == #id")
     public ResponseEntity<?> me(@AuthenticationPrincipal User user, @PathVariable String id) {
