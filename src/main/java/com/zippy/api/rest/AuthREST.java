@@ -1,15 +1,15 @@
-package com.zippy.security.rest;
+package com.zippy.api.rest;
 
-import com.zippy.security.document.RefreshToken;
-import com.zippy.security.document.Role;
-import com.zippy.security.document.User;
-import com.zippy.security.dto.LoginDTO;
-import com.zippy.security.dto.SignupDTO;
-import com.zippy.security.dto.TokenDTO;
-import com.zippy.security.jwt.JwtHelper;
-import com.zippy.security.repository.RefreshTokenRepository;
-import com.zippy.security.repository.UserRepository;
-import com.zippy.security.service.UserService;
+import com.zippy.api.document.RefreshToken;
+import com.zippy.api.document.Role;
+import com.zippy.api.document.User;
+import com.zippy.api.dto.LoginDTO;
+import com.zippy.api.dto.SignupDTO;
+import com.zippy.api.dto.TokenDTO;
+import com.zippy.api.jwt.JwtHelper;
+import com.zippy.api.repository.RefreshTokenRepository;
+import com.zippy.api.repository.UserRepository;
+import com.zippy.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

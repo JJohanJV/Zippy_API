@@ -1,8 +1,8 @@
-package com.zippy.security.security;
+package com.zippy.api.security;
 
-import com.zippy.security.document.User;
-import com.zippy.security.jwt.JwtHelper;
-import com.zippy.security.service.UserService;
+import com.zippy.api.document.User;
+import com.zippy.api.jwt.JwtHelper;
+import com.zippy.api.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

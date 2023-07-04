@@ -1,6 +1,6 @@
-package com.zippy.security.security;
+package com.zippy.api.security;
 
-import com.zippy.security.service.UserService;
+import com.zippy.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

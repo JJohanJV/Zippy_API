@@ -1,6 +1,5 @@
-package com.zippy.security.document;
+package com.zippy.api.document;
 
-import com.zippy.security.document.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;

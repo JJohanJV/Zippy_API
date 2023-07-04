@@ -1,6 +1,6 @@
-package com.zippy.security.repository;
+package com.zippy.api.repository;
 
-import com.zippy.security.document.RefreshToken;
+import com.zippy.api.document.RefreshToken;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

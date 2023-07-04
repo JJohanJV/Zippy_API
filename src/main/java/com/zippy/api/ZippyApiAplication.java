@@ -1,4 +1,4 @@
-package com.zippy.security;
+package com.zippy.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,10 +7,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories
 
-public class SecurityApplication {
+public class ZippyApiAplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SecurityApplication.class, args);
+		SpringApplication.run(ZippyApiAplication.class, args);
 	}
 
 }

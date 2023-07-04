@@ -1,4 +1,4 @@
-package com.zippy.security.dto;
+package com.zippy.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.zippy.security.document.Role;
+import com.zippy.api.document.Role;
 
 @Getter
 @Setter

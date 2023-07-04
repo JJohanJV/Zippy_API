@@ -1,4 +1,4 @@
-package com.zippy.security.config;
+package com.zippy.api.config;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;

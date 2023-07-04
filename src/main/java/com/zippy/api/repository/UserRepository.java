@@ -1,6 +1,6 @@
-package com.zippy.security.repository;
+package com.zippy.api.repository;
 
-import com.zippy.security.document.User;
+import com.zippy.api.document.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
