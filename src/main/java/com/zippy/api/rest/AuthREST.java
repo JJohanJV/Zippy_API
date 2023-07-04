@@ -1,8 +1,8 @@
 package com.zippy.api.rest;
 
+import com.zippy.api.document.Credential;
 import com.zippy.api.document.RefreshToken;
 import com.zippy.api.document.Role;
-import com.zippy.api.document.User;
 import com.zippy.api.dto.LoginDTO;
 import com.zippy.api.dto.SignupDTO;
 import com.zippy.api.dto.TokenDTO;
@@ -47,16 +47,16 @@ public class AuthREST {
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO dto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = (User) authentication.getPrincipal();
+        Credential credential = (Credential) authentication.getPrincipal();
 
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setOwner(user);
+        refreshToken.setOwner(credential);
         refreshTokenRepository.save(refreshToken);
 
-        String accessToken = jwtHelper.generateAccessToken(user);
-        String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken);
+        String accessToken = jwtHelper.generateAccessToken(credential);
+        String refreshTokenString = jwtHelper.generateRefreshToken(credential, refreshToken);
 
-        return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+        return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, refreshTokenString));
     }
 
     @PostMapping("signup")
@@ -66,18 +66,18 @@ public class AuthREST {
         if (userRole == null) {
             return ResponseEntity.badRequest().body("El campo 'role' es obligatorio");
         }
-        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), userRole);
+        Credential credential = new Credential(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), userRole);
 
-        userRepository.save(user);
+        userRepository.save(credential);
 
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setOwner(user);
+        refreshToken.setOwner(credential);
         refreshTokenRepository.save(refreshToken);
 
-        String accessToken = jwtHelper.generateAccessToken(user);
-        String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken);
+        String accessToken = jwtHelper.generateAccessToken(credential);
+        String refreshTokenString = jwtHelper.generateRefreshToken(credential, refreshToken);
 
-        return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+        return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, refreshTokenString));
     }
 
     @PostMapping("logout")
@@ -111,10 +111,10 @@ public class AuthREST {
         if (jwtHelper.validateRefreshToken(refreshTokenString) && refreshTokenRepository.existsById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString))) {
             // valid and exists in db
 
-            User user = userService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
-            String accessToken = jwtHelper.generateAccessToken(user);
+            Credential credential = userService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
+            String accessToken = jwtHelper.generateAccessToken(credential);
 
-            return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+            return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, refreshTokenString));
         }
 
         throw new BadCredentialsException("invalid token");
@@ -128,16 +128,16 @@ public class AuthREST {
 
             refreshTokenRepository.deleteById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString));
 
-            User user = userService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
+            Credential credential = userService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
 
             RefreshToken refreshToken = new RefreshToken();
-            refreshToken.setOwner(user);
+            refreshToken.setOwner(credential);
             refreshTokenRepository.save(refreshToken);
 
-            String accessToken = jwtHelper.generateAccessToken(user);
-            String newRefreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken);
+            String accessToken = jwtHelper.generateAccessToken(credential);
+            String newRefreshTokenString = jwtHelper.generateRefreshToken(credential, refreshToken);
 
-            return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, newRefreshTokenString));
+            return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, newRefreshTokenString));
         }
 
         throw new BadCredentialsException("invalid token");

@@ -1,6 +1,6 @@
 package com.zippy.api.rest;
 
-import com.zippy.api.document.User;
+import com.zippy.api.document.Credential;
 import com.zippy.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +17,16 @@ public class UserREST {
     @Autowired
     UserRepository userRepository;
 
-    // This endpoint returns the currently authenticated user
+    // This endpoint returns the currently authenticated credential
     @GetMapping("/me")
-    public ResponseEntity<?> me(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(user);
+    public ResponseEntity<?> me(@AuthenticationPrincipal Credential credential) {
+        return ResponseEntity.ok(credential);
     }
 
-    // This endpoint return the user by id, while the id is the same of the user.
+    // This endpoint return the credential by id, while the id is the same of the credential.
     @GetMapping("/{id}")
-    @PreAuthorize("#user.id == #id")
-    public ResponseEntity<?> me(@AuthenticationPrincipal User user, @PathVariable String id) {
+    @PreAuthorize("#credential.id == #id")
+    public ResponseEntity<?> me(@AuthenticationPrincipal Credential credential, @PathVariable String id) {
         return ResponseEntity.ok(userRepository.findById(id));
     }
 }

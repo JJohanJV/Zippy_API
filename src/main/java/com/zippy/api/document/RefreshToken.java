@@ -11,5 +11,5 @@ public class RefreshToken {
     @Id
     String id;
     @DocumentReference(lazy = true)
-    private User owner;
+    private Credential owner;
 }

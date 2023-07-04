@@ -5,8 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.zippy.api.document.Credential;
 import com.zippy.api.document.RefreshToken;
-import com.zippy.api.document.User;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -40,19 +40,19 @@ public class JwtHelper {
                 .build();
     }
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(Credential credential) {
         return JWT.create()
                 .withIssuer(issuer)
-                .withSubject(user.getId())
+                .withSubject(credential.getId())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(new Date().getTime() + accessTokenExpirationMs))
                 .sign(accessTokenAlgorithm);
     }
 
-    public String generateRefreshToken(User user, RefreshToken refreshToken) {
+    public String generateRefreshToken(Credential credential, RefreshToken refreshToken) {
         return JWT.create()
                 .withIssuer(issuer)
-                .withSubject(user.getId())
+                .withSubject(credential.getId())
                 .withClaim("tokenId", refreshToken.getId())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date((new Date()).getTime() + refreshTokenExpirationMs))

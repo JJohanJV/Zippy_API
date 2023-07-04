@@ -14,7 +14,7 @@ import java.util.Collections;
 
 @Document
 @Data
-public class User implements UserDetails {
+public class Credential implements UserDetails {
     @Id
     String id;
     @Indexed(unique = true)

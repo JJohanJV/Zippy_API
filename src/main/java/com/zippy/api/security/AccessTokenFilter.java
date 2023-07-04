@@ -1,6 +1,6 @@
 package com.zippy.api.security;
 
-import com.zippy.api.document.User;
+import com.zippy.api.document.Credential;
 import com.zippy.api.jwt.JwtHelper;
 import com.zippy.api.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -31,8 +31,8 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             Optional<String> accessToken = parseAccessToken(request);
             if(accessToken.isPresent() && jwtHelper.validateAccessToken(accessToken.get())) {
                 String userId = jwtHelper.getUserIdFromAccessToken(accessToken.get());
-                User user = userService.findById(userId);
-                UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                Credential credential = userService.findById(userId);
+                UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(credential, null, credential.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(upat);
             }
