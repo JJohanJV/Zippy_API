@@ -1,0 +1,35 @@
+Vehiculos:
+
+Crear nuevo vehiculo
+Borrar vehiculo
+Cambiar el estado (usando enumerador)
+Agregar nuevo mantenimiento
+Un update para kilometers
+Un update para battery
+Ver todos mantenimientos de un vehiculo 
+
+Estaciones:
+
+Crear nueva estación
+Borrar estación
+Obtener todos los vehiculos que están en la estación
+Obtener todos los vehiculos ACTIVO de la estación
+Obtener las coordenadas
+Obtener todas las estaciones
+Obtener estacion por nombre
+
+Viajes:
+
+Crear nuevo viaje
+Crear reserva viaje (no olvidar que internmente la reserva debe pasar a expirado si pasan más del DEADLINE base de datos)
+Cancelar viaje (cambiar estado de viaje y el de patineta)
+Finalizar viaje
+**Calcular ruta**
+Obtener viaje por user_id
+Obtener viaje por vehicle_id
+Obtener todos los viajes
+Crear reporte empleado
+Crear reporte usuario
+Crear calificacion de usuario y comentario de usuario (en una sola)
+
+
