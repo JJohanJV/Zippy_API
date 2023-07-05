@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@Document(collection = "vehicle")
+@Document
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,15 +34,5 @@ public class Vehicle {
     private int battery;
     private List<Maintenance> maintenances;
 
-    public Vehicle(String serial, String gps_serial, String model, String type, String status, int kilometers, Date start_up_date, boolean is_electric) {
-        this.serial = serial;
-        this.gps_serial = gps_serial;
-        this.model = model;
-        this.type = type;
-        this.status = status;
-        Kilometers = kilometers;
-        this.start_up_date = start_up_date;
-        this.is_electric = is_electric;
-    }
 }
 
