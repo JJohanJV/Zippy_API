@@ -2,14 +2,14 @@ package com.zippy.api.rest;
 
 import com.zippy.api.document.Credential;
 import com.zippy.api.document.RefreshToken;
-import com.zippy.api.document.Role;
+import com.zippy.api.constants.Role;
 import com.zippy.api.dto.LoginDTO;
 import com.zippy.api.dto.SignupDTO;
 import com.zippy.api.dto.TokenDTO;
 import com.zippy.api.jwt.JwtHelper;
 import com.zippy.api.repository.RefreshTokenRepository;
-import com.zippy.api.repository.UserRepository;
-import com.zippy.api.service.UserService;
+import com.zippy.api.repository.CredentialRepository;
+import com.zippy.api.service.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,13 +34,13 @@ public class AuthREST {
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
     @Autowired
-    UserRepository userRepository;
+    CredentialRepository credentialRepository;
     @Autowired
     JwtHelper jwtHelper;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    UserService userService;
+    CredentialService credentialService;
 
     @PostMapping("/login")
     @Transactional
@@ -68,7 +68,7 @@ public class AuthREST {
         }
         Credential credential = new Credential(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), userRole);
 
-        userRepository.save(credential);
+        credentialRepository.save(credential);
 
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setOwner(credential);
@@ -111,7 +111,7 @@ public class AuthREST {
         if (jwtHelper.validateRefreshToken(refreshTokenString) && refreshTokenRepository.existsById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString))) {
             // valid and exists in db
 
-            Credential credential = userService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
+            Credential credential = credentialService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
             String accessToken = jwtHelper.generateAccessToken(credential);
 
             return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, refreshTokenString));
@@ -128,7 +128,7 @@ public class AuthREST {
 
             refreshTokenRepository.deleteById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString));
 
-            Credential credential = userService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
+            Credential credential = credentialService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
 
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.setOwner(credential);

@@ -2,7 +2,7 @@ package com.zippy.api.security;
 
 import com.zippy.api.document.Credential;
 import com.zippy.api.jwt.JwtHelper;
-import com.zippy.api.service.UserService;
+import com.zippy.api.service.CredentialService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +23,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtHelper jwtHelper;
     @Autowired
-    private UserService userService;
+    private CredentialService credentialService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -31,7 +31,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             Optional<String> accessToken = parseAccessToken(request);
             if(accessToken.isPresent() && jwtHelper.validateAccessToken(accessToken.get())) {
                 String userId = jwtHelper.getUserIdFromAccessToken(accessToken.get());
-                Credential credential = userService.findById(userId);
+                Credential credential = credentialService.findById(userId);
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(credential, null, credential.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(upat);

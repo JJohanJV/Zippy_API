@@ -1,6 +1,7 @@
 package com.zippy.api.document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zippy.api.constants.Role;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
