@@ -4,20 +4,21 @@ import com.zippy.api.document.Vehicle;
 import com.zippy.api.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import com.zippy.api.dto.VehicleDTO;
 @RestController
-@RequestMapping("/api/zippy/vehicle")
+@RequestMapping("/api/vehicle")
 public class VehicleREST {
+    private final VehicleService vehicleService;
 
     @Autowired
-    private VehicleService vehicleService;
+    public VehicleREST(VehicleService vehicleService){
+        this.vehicleService = vehicleService;
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<Vehicle>> allVehicles() {
         return ResponseEntity.ok(vehicleService.allVehicles());
@@ -32,5 +33,11 @@ public class VehicleREST {
                         : 0
         );
         return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteVehicle(@PathVariable String id){
+        vehicleService.deleteVehicleById(id);
+        return ResponseEntity.ok().build();
     }
 }
