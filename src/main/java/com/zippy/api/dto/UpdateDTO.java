@@ -10,8 +10,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UpdateDTO {
     @NotBlank
-    private String userId;
-    @NotBlank
     private String newUsername;
     @NotBlank
     private String newEmail;

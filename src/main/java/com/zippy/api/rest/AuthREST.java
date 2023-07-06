@@ -10,6 +10,7 @@ import com.zippy.api.jwt.JwtHelper;
 import com.zippy.api.repository.RefreshTokenRepository;
 import com.zippy.api.repository.CredentialRepository;
 import com.zippy.api.service.CredentialService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,18 +30,22 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthREST {
+    private final AuthenticationManager authenticationManager;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final CredentialRepository credentialRepository;
+    private final JwtHelper jwtHelper;
+    private final PasswordEncoder passwordEncoder;
+    private final CredentialService credentialService;
+
     @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    RefreshTokenRepository refreshTokenRepository;
-    @Autowired
-    CredentialRepository credentialRepository;
-    @Autowired
-    JwtHelper jwtHelper;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    CredentialService credentialService;
+    public AuthREST(AuthenticationManager authenticationManager, RefreshTokenRepository refreshTokenRepository, CredentialRepository credentialRepository, JwtHelper jwtHelper, PasswordEncoder passwordEncoder, CredentialService credentialService) {
+        this.authenticationManager = authenticationManager;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.credentialRepository = credentialRepository;
+        this.jwtHelper = jwtHelper;
+        this.passwordEncoder = passwordEncoder;
+        this.credentialService = credentialService;
+    }
 
     @PostMapping("/login")
     @Transactional
@@ -49,6 +54,11 @@ public class AuthREST {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Credential credential = (Credential) authentication.getPrincipal();
 
+        return getResponseEntity(credential);
+    }
+
+    @NotNull
+    private ResponseEntity<?> getResponseEntity(Credential credential) {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setOwner(credential);
         refreshTokenRepository.save(refreshToken);
@@ -70,14 +80,7 @@ public class AuthREST {
 
         credentialRepository.save(credential);
 
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setOwner(credential);
-        refreshTokenRepository.save(refreshToken);
-
-        String accessToken = jwtHelper.generateAccessToken(credential);
-        String refreshTokenString = jwtHelper.generateRefreshToken(credential, refreshToken);
-
-        return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, refreshTokenString));
+        return getResponseEntity(credential);
     }
 
     @PostMapping("logout")
@@ -130,14 +133,7 @@ public class AuthREST {
 
             Credential credential = credentialService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
 
-            RefreshToken refreshToken = new RefreshToken();
-            refreshToken.setOwner(credential);
-            refreshTokenRepository.save(refreshToken);
-
-            String accessToken = jwtHelper.generateAccessToken(credential);
-            String newRefreshTokenString = jwtHelper.generateRefreshToken(credential, refreshToken);
-
-            return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, newRefreshTokenString));
+            return getResponseEntity(credential);
         }
 
         throw new BadCredentialsException("invalid token");
