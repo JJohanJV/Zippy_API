@@ -36,18 +36,6 @@ public class Credential implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public Role getRole() {return role;}
-
-    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
