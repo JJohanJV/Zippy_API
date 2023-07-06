@@ -1,4 +1,4 @@
-package com.zippy.api.document;
+package com.zippy.api.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class Maintenance {
-
     @Id
     private ObjectId id;
     @NotNull
@@ -25,5 +24,4 @@ public class Maintenance {
     @NotNull
     private ObjectId employeeId;
     private double cost;
-
 }

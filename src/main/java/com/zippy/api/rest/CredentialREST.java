@@ -1,7 +1,6 @@
 package com.zippy.api.rest;
 
 import com.zippy.api.document.Credential;
-import com.zippy.api.dto.TokenDTO;
 import com.zippy.api.dto.UpdateDTO;
 import com.zippy.api.repository.CredentialRepository;
 import org.jetbrains.annotations.NotNull;

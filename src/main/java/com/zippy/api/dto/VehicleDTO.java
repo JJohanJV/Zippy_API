@@ -9,18 +9,15 @@ import com.zippy.api.constants.VehicleStatus;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class VehicleDTO {
     private VehicleType type;
     private String model;
     private String serial;
-    private String gps_serial;
+    private String gpsSerial;
     private VehicleStatus status;
-    private LocalDateTime start_up_date;
-    private boolean is_electric;
+    private LocalDateTime startUpDate;
+    private boolean isElectric;
     private int battery;
-    private List<Maintenance> maintenances;
-
 }
