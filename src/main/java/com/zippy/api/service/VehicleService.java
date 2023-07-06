@@ -14,5 +14,7 @@ public class VehicleService {
     private VehicleRepository vehicleRepository;
     public List<Vehicle> allVehicles(){
         return vehicleRepository.findAll();
+
     }
+
 }
