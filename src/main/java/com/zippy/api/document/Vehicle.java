@@ -53,7 +53,7 @@ public class Vehicle {
         this.model = model;
         this.serial = serial;
         this.gpsSerial = gpsSerial;
-        this.status = VehicleStatus.ACTIVE;
+        this.status = VehicleStatus.AVAILABLE;
         this.Kilometers = 0;
         this.startUpDate = LocalDateTime.now();
         this.isElectric = isElectric;

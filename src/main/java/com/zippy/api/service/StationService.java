@@ -1,6 +1,7 @@
 package com.zippy.api.service;
 
 import com.zippy.api.document.Station;
+import com.zippy.api.document.Vehicle;
 import com.zippy.api.repository.StationRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,12 @@ public class StationService {
         return stationRepository.findByName(name);
     }
 
-    public Station addVehicleToStation(String stationId, String vehicleId) {
+    public Station addVehicleToStation(String stationId, Vehicle vehicle) {
         Station station = stationRepository.findById(new ObjectId(stationId)).orElse(null);
         if (station == null) {
             return null;
         }
-        station.getVehicles().add(new ObjectId(vehicleId));
+        station.getVehicles().add(vehicle);
         return stationRepository.save(station);
     }
 }
