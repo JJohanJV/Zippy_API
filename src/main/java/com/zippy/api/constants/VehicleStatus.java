@@ -1,9 +1,10 @@
 package com.zippy.api.constants;
 
 public enum VehicleStatus {
-    ACTIVE,
-    INACTIVE,
-    IN_MAINTENANCE,
+    AVAILABLE,
+    UNAVAILABLE,
+    ON_ROUTE,
+    MAINTENANCE,
     OUT_OF_SERVICE,
     RESERVED
 }

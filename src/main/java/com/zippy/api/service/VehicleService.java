@@ -28,4 +28,8 @@ public class VehicleService {
     public void deleteVehicleById(String id) {
         vehicleRepository.deleteById(new ObjectId(id));
     }
+
+    public Vehicle getVehicleById(String id) {
+        return vehicleRepository.findById(new ObjectId(id)).orElse(null);
+    }
 }

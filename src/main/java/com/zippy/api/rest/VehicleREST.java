@@ -40,4 +40,23 @@ public class VehicleREST {
         vehicleService.deleteVehicleById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/update/battery/{id}")
+    public ResponseEntity<?> updateBattery(@PathVariable String id, @RequestBody int battery){
+        Vehicle vehicle = vehicleService.getVehicleById(id);
+        vehicle.setBattery(battery);
+        return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
+    }
+
+    @PutMapping("/update/kilometers/{id}")
+    public ResponseEntity<?> updateKilometers(@PathVariable String id, @RequestBody int kilometers){
+        Vehicle vehicle = vehicleService.getVehicleById(id);
+        vehicle.setKilometers(kilometers);
+        return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getVehicle(@PathVariable String id){
+        return ResponseEntity.ok(vehicleService.getVehicleById(id));
+    }
 }
