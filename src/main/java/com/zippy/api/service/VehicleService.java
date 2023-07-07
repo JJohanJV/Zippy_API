@@ -32,4 +32,6 @@ public class VehicleService {
     public Vehicle getVehicleById(String id) {
         return vehicleRepository.findById(new ObjectId(id)).orElse(null);
     }
+
+
 }

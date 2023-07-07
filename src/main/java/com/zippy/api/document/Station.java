@@ -18,6 +18,6 @@ public class Station {
     private String name;
     private String location;
     private int capacity;
-    private List<Vehicle> vehicles;
+    private List<ObjectId> vehicles;
     private StationStatus status;
 }
