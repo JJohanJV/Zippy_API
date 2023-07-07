@@ -1,5 +1,6 @@
-package com.zippy.api.document;
+package com.zippy.api.models;
 
+import com.zippy.api.document.Employee;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import lombok.AllArgsConstructor;
@@ -21,12 +22,4 @@ public class Report {
         this.employeeReport = employeeReport;
     }
 
-    @Data
-    @AllArgsConstructor
-    public static class EmployeeReport {
-
-        @DocumentReference
-        private Employee employeeId;
-        private String report;
-    }
 }

@@ -20,4 +20,8 @@ public class Station {
     private int capacity;
     private List<Vehicle> vehicles;
     private StationStatus status;
+
+    public String getLocation() {
+        return location;
+    }
 }
