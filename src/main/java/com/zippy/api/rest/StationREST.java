@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StationREST {
     private final StationService stationService;
-    @Autowired
+
     public StationREST(StationService stationService){
         this.stationService = stationService;
     }

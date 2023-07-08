@@ -19,7 +19,6 @@ public class CredentialREST {
     private final CredentialRepository credentialRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public CredentialREST(CredentialRepository credentialRepository, PasswordEncoder passwordEncoder) {
         this.credentialRepository = credentialRepository;
         this.passwordEncoder = passwordEncoder;

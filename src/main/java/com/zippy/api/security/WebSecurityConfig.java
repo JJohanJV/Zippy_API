@@ -19,10 +19,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private CredentialService credentialService;
-    @Autowired
-    private AccessTokenEntryPoint accessTokenEntryPoint;
+    private final CredentialService credentialService;
+    private final AccessTokenEntryPoint accessTokenEntryPoint;
+
+    public WebSecurityConfig(CredentialService, AccessTokenEntryPoint) {
+        this.credentialService = credentialService;
+        this.accessTokenEntryPoint = accessTokenEntryPoint;
+    }
 
     @Bean
     public AccessTokenFilter accessTokenFilter() {

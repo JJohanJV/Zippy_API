@@ -2,7 +2,6 @@ package com.zippy.api.rest;
 
 import com.zippy.api.document.Vehicle;
 import com.zippy.api.service.VehicleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,6 @@ import com.zippy.api.dto.VehicleDTO;
 public class VehicleREST {
     private final VehicleService vehicleService;
 
-    @Autowired
     public VehicleREST(VehicleService vehicleService){
         this.vehicleService = vehicleService;
     }
@@ -45,13 +43,6 @@ public class VehicleREST {
     public ResponseEntity<?> updateBattery(@PathVariable String id, @RequestBody int battery){
         Vehicle vehicle = vehicleService.getVehicleById(id);
         vehicle.setBattery(battery);
-        return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
-    }
-
-    @PutMapping("/update/kilometers/{id}")
-    public ResponseEntity<?> updateKilometers(@PathVariable String id, @RequestBody int kilometers){
-        Vehicle vehicle = vehicleService.getVehicleById(id);
-        vehicle.setKilometers(kilometers);
         return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
     }
 
