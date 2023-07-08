@@ -4,7 +4,6 @@ import com.zippy.api.document.Credential;
 import com.zippy.api.dto.UpdateDTO;
 import com.zippy.api.repository.CredentialRepository;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

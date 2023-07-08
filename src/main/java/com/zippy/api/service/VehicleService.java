@@ -23,12 +23,12 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public void deleteVehicleById(String id) {
-        vehicleRepository.deleteById(new ObjectId(id));
+    public void deleteVehicleById(ObjectId id) {
+        vehicleRepository.deleteById(id);
     }
 
-    public Vehicle getVehicleById(String id) {
-        return vehicleRepository.findById(new ObjectId(id)).orElse(null);
+    public Vehicle getVehicleById(ObjectId id) {
+        return vehicleRepository.findById(id).orElse(null);
     }
 
 

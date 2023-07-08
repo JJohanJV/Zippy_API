@@ -1,7 +1,6 @@
 package com.zippy.api.security;
 
 import com.zippy.api.service.CredentialService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CredentialService credentialService;
     private final AccessTokenEntryPoint accessTokenEntryPoint;
 
-    public WebSecurityConfig(CredentialService, AccessTokenEntryPoint) {
+    public WebSecurityConfig(CredentialService credentialService, AccessTokenEntryPoint accessTokenEntryPoint) {
         this.credentialService = credentialService;
         this.accessTokenEntryPoint = accessTokenEntryPoint;
     }

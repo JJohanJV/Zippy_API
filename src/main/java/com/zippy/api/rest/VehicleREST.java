@@ -2,6 +2,7 @@ package com.zippy.api.rest;
 
 import com.zippy.api.document.Vehicle;
 import com.zippy.api.service.VehicleService;
+import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,14 @@ public class VehicleREST {
 
     @PostMapping("/add")
     public ResponseEntity<?> addVehicle(VehicleDTO dto){
-        Vehicle vehicle = new Vehicle(dto.getType(), dto.getModel(),  dto.getGpsSerial(), dto.getSerial(),  dto.isElectric());
+        Vehicle vehicle =
+                new Vehicle(
+                        dto.getType(),
+                        dto.getModel(),
+                        dto.getGpsSerial(),
+                        dto.getSerial(),
+                        dto.isElectric()
+                );
         vehicle.setBattery(
                 dto.isElectric()
                         ? dto.getBattery()
@@ -34,20 +42,20 @@ public class VehicleREST {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteVehicle(@PathVariable String id){
+    public ResponseEntity<?> deleteVehicle(@PathVariable ObjectId id){
         vehicleService.deleteVehicleById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update/battery/{id}")
-    public ResponseEntity<?> updateBattery(@PathVariable String id, @RequestBody int battery){
+    public ResponseEntity<?> updateBattery(@PathVariable ObjectId id, @RequestBody int battery){
         Vehicle vehicle = vehicleService.getVehicleById(id);
         vehicle.setBattery(battery);
         return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getVehicle(@PathVariable String id){
+    public ResponseEntity<?> getVehicle(@PathVariable ObjectId id){
         return ResponseEntity.ok(vehicleService.getVehicleById(id));
     }
 }

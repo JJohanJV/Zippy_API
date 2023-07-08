@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zippy.api.document.Credential;
 import com.zippy.api.document.RefreshToken;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -93,7 +94,7 @@ public class JwtHelper {
         return decodeRefreshToken(token).get().getSubject();
     }
 
-    public String getTokenIdFromRefreshToken(String token) {
+    public ObjectId getTokenIdFromRefreshToken(String token) {
         return decodeRefreshToken(token).get().getClaim("tokenId").asString();
     }
 }

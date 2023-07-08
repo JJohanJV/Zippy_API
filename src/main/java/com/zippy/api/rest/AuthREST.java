@@ -1,17 +1,19 @@
 package com.zippy.api.rest;
 
+import com.zippy.api.document.BillingInformation;
 import com.zippy.api.document.Credential;
 import com.zippy.api.document.RefreshToken;
 import com.zippy.api.constants.Role;
-import com.zippy.api.dto.LoginDTO;
-import com.zippy.api.dto.SignupDTO;
-import com.zippy.api.dto.TokenDTO;
+import com.zippy.api.document.User;
+import com.zippy.api.dto.*;
 import com.zippy.api.jwt.JwtHelper;
+import com.zippy.api.models.*;
 import com.zippy.api.repository.RefreshTokenRepository;
 import com.zippy.api.repository.CredentialRepository;
 import com.zippy.api.service.CredentialService;
+import com.zippy.api.service.UserService;
+import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthREST {
@@ -36,15 +39,23 @@ public class AuthREST {
     private final JwtHelper jwtHelper;
     private final PasswordEncoder passwordEncoder;
     private final CredentialService credentialService;
+    private final UserService userService;
 
-    @Autowired
-    public AuthREST(AuthenticationManager authenticationManager, RefreshTokenRepository refreshTokenRepository, CredentialRepository credentialRepository, JwtHelper jwtHelper, PasswordEncoder passwordEncoder, CredentialService credentialService) {
+    public AuthREST(
+            AuthenticationManager authenticationManager,
+            RefreshTokenRepository refreshTokenRepository,
+            CredentialRepository credentialRepository,
+            JwtHelper jwtHelper,
+            PasswordEncoder passwordEncoder,
+            CredentialService credentialService,
+            UserService userService){
         this.authenticationManager = authenticationManager;
         this.refreshTokenRepository = refreshTokenRepository;
         this.credentialRepository = credentialRepository;
         this.jwtHelper = jwtHelper;
         this.passwordEncoder = passwordEncoder;
         this.credentialService = credentialService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -71,12 +82,26 @@ public class AuthREST {
 
     @PostMapping("signup")
     @Transactional
-    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto) {
-        Role userRole = dto.getRole();
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto){
+        CredentialDTO credentialDTO = dto.getCredential();
+        UserDTO userDTO = dto.getUser();
+        BackupPersonDTO backupPersonDTO = userDTO.getBackupPerson();
+        AddressDTO addressDTO = userDTO.getAddress();
+//        if (credentialRepository.existsByEmail(credentialDTO.getEmail())) {
+//            return ResponseEntity.badRequest().body("El correo electrónico ya existe");
+//        }
+//        if (credentialRepository.existsByUsername(credentialDTO.getUsername())) {
+//            return ResponseEntity.badRequest().body("El nombre de usuario ya existe");
+//        }
+        Role userRole = credentialDTO.getRole();
         if (userRole == null) {
             return ResponseEntity.badRequest().body("El campo 'role' es obligatorio");
         }
-        Credential credential = new Credential(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), userRole);
+
+        ObjectId credentialId = new ObjectId();
+        User user = userService.createNewUser(userDTO, credentialId);
+
+        Credential credential = new Credential(credentialId, credentialDTO.getUsername(), passwordEncoder.encode(credentialDTO.getPassword()), credentialDTO.getEmail(), userRole, user.getId());
 
         credentialRepository.save(credential);
 

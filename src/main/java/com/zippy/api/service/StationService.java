@@ -5,7 +5,6 @@ import com.zippy.api.exception.StationNotFoundException;
 import com.zippy.api.repository.StationRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,34 +22,34 @@ public class StationService {
         return stationRepository.save(station);
     }
 
-    public void deleteStationById(String id) {
-        stationRepository.deleteById(new ObjectId(id));
+    public void deleteStationById(ObjectId id) {
+        stationRepository.deleteById(id);
     }
 
-    public Station getStationById(String id) {
-        return stationRepository.findById(new ObjectId(id)).orElse(null);
+    public Station getStationById(ObjectId id) {
+        return stationRepository.findById(id).orElse(null);
     }
 
     public Station getStationByName(String name) {
         return stationRepository.findByName(name);
     }
 
-    public Station addVehicleToStation(String stationId, ObjectId vehicle) throws StationNotFoundException {
-        Station station = stationRepository.findById(new ObjectId(stationId))
+    public Station addVehicleToStation(ObjectId stationId, ObjectId vehicle) throws StationNotFoundException {
+        Station station = stationRepository.findById(stationId)
                 .orElseThrow(() -> new StationNotFoundException("El id de la estación no existe"));
         station.getVehicles().add(vehicle);
         return stationRepository.save(station);
     }
 
-    public Station removeVehicleFromStation(String stationId, ObjectId vehicle) throws StationNotFoundException {
-        Station station = stationRepository.findById(new ObjectId(stationId))
+    public Station removeVehicleFromStation(ObjectId stationId, ObjectId vehicle) throws StationNotFoundException {
+        Station station = stationRepository.findById(stationId)
                 .orElseThrow(() -> new StationNotFoundException("El id de la estación no existe"));
         station.getVehicles().remove(vehicle);
         return stationRepository.save(station);
     }
 
-    public List<ObjectId> getAvaliblesVehiclesFromStation(String stationId) throws StationNotFoundException {
-        Station station = stationRepository.findById(new ObjectId(stationId))
+    public List<ObjectId> getAvaliblesVehiclesFromStation(ObjectId stationId) throws StationNotFoundException {
+        Station station = stationRepository.findById(stationId)
                 .orElseThrow(() -> new StationNotFoundException("El id de la estación no existe"));
         return station.getVehicles();
     }
