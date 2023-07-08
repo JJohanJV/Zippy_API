@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class User {
     @Id
+    private ObjectId id;
     private ObjectId credentialsId;
     private String name;
     private String lastname;
@@ -28,7 +29,6 @@ public class User {
     private String phone;
     private String document;
     private DocumentType documentType;
-    @Id
     private ObjectId billingInformationId;
     private BackupPerson backupPerson;
     private Address address;
