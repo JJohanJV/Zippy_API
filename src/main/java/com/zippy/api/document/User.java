@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     private ObjectId id;
-    private ObjectId credentialsId;
     private String firstName;
     private String lastName;
     private LocalDateTime birthday;

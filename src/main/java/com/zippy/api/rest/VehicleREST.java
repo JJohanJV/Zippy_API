@@ -1,6 +1,7 @@
 package com.zippy.api.rest;
 
 import com.zippy.api.document.Vehicle;
+import com.zippy.api.dto.VehicleDTO;
 import com.zippy.api.service.VehicleService;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
@@ -8,13 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import com.zippy.api.dto.VehicleDTO;
 @RestController
 @RequestMapping("/api/vehicle")
 public class VehicleREST {
     private final VehicleService vehicleService;
 
-    public VehicleREST(VehicleService vehicleService){
+    public VehicleREST(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
 
@@ -24,7 +24,7 @@ public class VehicleREST {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addVehicle(VehicleDTO dto){
+    public ResponseEntity<?> addVehicle(VehicleDTO dto) {
         Vehicle vehicle =
                 new Vehicle(
                         dto.getType(),
@@ -42,20 +42,20 @@ public class VehicleREST {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteVehicle(@PathVariable ObjectId id){
+    public ResponseEntity<?> deleteVehicle(@PathVariable ObjectId id) {
         vehicleService.deleteVehicleById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update/battery/{id}")
-    public ResponseEntity<?> updateBattery(@PathVariable ObjectId id, @RequestBody int battery){
+    public ResponseEntity<?> updateBattery(@PathVariable ObjectId id, @RequestBody int battery) {
         Vehicle vehicle = vehicleService.getVehicleById(id);
         vehicle.setBattery(battery);
         return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getVehicle(@PathVariable ObjectId id){
+    public ResponseEntity<?> getVehicle(@PathVariable ObjectId id) {
         return ResponseEntity.ok(vehicleService.getVehicleById(id));
     }
 }

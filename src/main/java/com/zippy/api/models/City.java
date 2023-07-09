@@ -2,6 +2,7 @@ package com.zippy.api.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 @Data

@@ -4,9 +4,7 @@ import com.zippy.api.constants.DocumentType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,7 +16,7 @@ public class UserDTO {
     @NotBlank
     private String lastName;
     @NotBlank
-    private LocalDateTime birthday;
+    private String birthday;
     @NotBlank
     private String occupation;
     @NotBlank

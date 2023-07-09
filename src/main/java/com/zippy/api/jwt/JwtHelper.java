@@ -20,13 +20,13 @@ import java.util.Optional;
 public class JwtHelper {
     static final String issuer = "MyApp";
 
-    private long accessTokenExpirationMs;
-    private long refreshTokenExpirationMs;
+    private final long accessTokenExpirationMs;
+    private final long refreshTokenExpirationMs;
 
-    private Algorithm accessTokenAlgorithm;
-    private Algorithm refreshTokenAlgorithm;
-    private JWTVerifier accessTokenVerifier;
-    private JWTVerifier refreshTokenVerifier;
+    private final Algorithm accessTokenAlgorithm;
+    private final Algorithm refreshTokenAlgorithm;
+    private final JWTVerifier accessTokenVerifier;
+    private final JWTVerifier refreshTokenVerifier;
 
     public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("${refreshTokenSecret}") String refreshTokenSecret, @Value("${com.zippy.api.refreshTokenExpirationDays}") int refreshTokenExpirationDays, @Value("${com.zippy.api.accessTokenExpirationMinutes}") int accessTokenExpirationMinutes) {
         accessTokenExpirationMs = (long) accessTokenExpirationMinutes * 60 * 1000;
@@ -44,7 +44,7 @@ public class JwtHelper {
     public String generateAccessToken(Credential credential) {
         return JWT.create()
                 .withIssuer(issuer)
-                .withSubject(credential.getId())
+                .withSubject(credential.getId().toString())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(new Date().getTime() + accessTokenExpirationMs))
                 .sign(accessTokenAlgorithm);
@@ -53,8 +53,8 @@ public class JwtHelper {
     public String generateRefreshToken(Credential credential, RefreshToken refreshToken) {
         return JWT.create()
                 .withIssuer(issuer)
-                .withSubject(credential.getId())
-                .withClaim("tokenId", refreshToken.getId())
+                .withSubject(credential.getId().toString())
+                .withClaim("tokenId", refreshToken.getId().toString())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date((new Date()).getTime() + refreshTokenExpirationMs))
                 .sign(refreshTokenAlgorithm);
@@ -86,15 +86,17 @@ public class JwtHelper {
         return decodeRefreshToken(token).isPresent();
     }
 
-    public String getUserIdFromAccessToken(String token) {
-        return decodeAccessToken(token).get().getSubject();
+    public ObjectId getUserIdFromAccessToken(String token) {
+        return new ObjectId(decodeAccessToken(token).get().getSubject());
     }
 
-    public String getUserIdFromRefreshToken(String token) {
-        return decodeRefreshToken(token).get().getSubject();
+
+    public ObjectId getUserIdFromRefreshToken(String token) {
+        return new ObjectId(decodeRefreshToken(token).get().getSubject());
     }
+
 
     public ObjectId getTokenIdFromRefreshToken(String token) {
-        return decodeRefreshToken(token).get().getClaim("tokenId").asString();
+        return new ObjectId(decodeRefreshToken(token).get().getClaim("tokenId").asString());
     }
 }

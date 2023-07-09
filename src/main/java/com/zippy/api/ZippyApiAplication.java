@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 public class ZippyApiAplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ZippyApiAplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ZippyApiAplication.class, args);
+    }
 
 }

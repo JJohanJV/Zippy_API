@@ -2,8 +2,9 @@ package com.zippy.api.service;
 
 import com.zippy.api.document.Vehicle;
 import com.zippy.api.repository.VehicleRepository;
-import org.springframework.stereotype.Service;
 import org.bson.types.ObjectId;
+import org.springframework.stereotype.Service;
+import com.zippy.api.exception.VehicleNotFoundException;
 
 import java.util.List;
 
@@ -11,11 +12,11 @@ import java.util.List;
 public class VehicleService {
     private final VehicleRepository vehicleRepository;
 
-    public VehicleService(VehicleRepository vehicleRepository){
+    public VehicleService(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public List<Vehicle> allVehicles(){
+    public List<Vehicle> allVehicles() {
         return vehicleRepository.findAll();
     }
 
@@ -27,8 +28,12 @@ public class VehicleService {
         vehicleRepository.deleteById(id);
     }
 
-    public Vehicle getVehicleById(ObjectId id) {
-        return vehicleRepository.findById(id).orElse(null);
+    public Vehicle getVehicleById(ObjectId id) throws VehicleNotFoundException {
+        return vehicleRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException("El id del vehículo no existe"));
+    }
+
+    public Vehicle getVehicleBySerial(String serial) {
+        return vehicleRepository.findBySerial(serial);
     }
 
 
