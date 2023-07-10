@@ -20,10 +20,9 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     private ObjectId id;
-    private ObjectId credentialsId;
-    private String name;
-    private String lastname;
-    private LocalDateTime birthdate;
+    private String firstName;
+    private String lastName;
+    private LocalDateTime birthday;
     private String occupation;
     private String email;
     private String phone;
@@ -32,5 +31,4 @@ public class User {
     private ObjectId billingInformationId;
     private BackupPerson backupPerson;
     private Address address;
-
 }

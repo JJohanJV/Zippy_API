@@ -1,7 +1,6 @@
 package com.zippy.api.security;
 
 import com.zippy.api.service.CredentialService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,10 +18,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private CredentialService credentialService;
-    @Autowired
-    private AccessTokenEntryPoint accessTokenEntryPoint;
+    private final CredentialService credentialService;
+    private final AccessTokenEntryPoint accessTokenEntryPoint;
+
+    public WebSecurityConfig(CredentialService credentialService, AccessTokenEntryPoint accessTokenEntryPoint) {
+        this.credentialService = credentialService;
+        this.accessTokenEntryPoint = accessTokenEntryPoint;
+    }
 
     @Bean
     public AccessTokenFilter accessTokenFilter() {

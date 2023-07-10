@@ -2,9 +2,9 @@ package com.zippy.api.service;
 
 import com.zippy.api.document.Vehicle;
 import com.zippy.api.repository.VehicleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.bson.types.ObjectId;
+import org.springframework.stereotype.Service;
+import com.zippy.api.exception.VehicleNotFoundException;
 
 import java.util.List;
 
@@ -12,24 +12,29 @@ import java.util.List;
 public class VehicleService {
     private final VehicleRepository vehicleRepository;
 
-    @Autowired
-    public VehicleService(VehicleRepository vehicleRepository){
+    public VehicleService(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public List<Vehicle> allVehicles(){
+    public List<Vehicle> allVehicles() {
         return vehicleRepository.findAll();
     }
 
-    public Object addVehicle(Vehicle vehicle) {
+    public Vehicle addVehicle(Vehicle vehicle) {
         return vehicleRepository.save(vehicle);
     }
 
-    public void deleteVehicleById(String id) {
-        vehicleRepository.deleteById(new ObjectId(id));
+    public void deleteVehicleById(ObjectId id) {
+        vehicleRepository.deleteById(id);
     }
 
-    public Vehicle getVehicleById(String id) {
-        return vehicleRepository.findById(new ObjectId(id)).orElse(null);
+    public Vehicle getVehicleById(ObjectId id) throws VehicleNotFoundException {
+        return vehicleRepository.findById(id).orElseThrow(() -> new VehicleNotFoundException("El id del vehículo no existe"));
     }
+
+    public Vehicle getVehicleBySerial(String serial) {
+        return vehicleRepository.findBySerial(serial);
+    }
+
+
 }

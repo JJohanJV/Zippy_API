@@ -3,8 +3,8 @@ package com.zippy.api.rest;
 import com.zippy.api.document.Credential;
 import com.zippy.api.dto.UpdateDTO;
 import com.zippy.api.repository.CredentialRepository;
+import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +19,6 @@ public class CredentialREST {
     private final CredentialRepository credentialRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public CredentialREST(CredentialRepository credentialRepository, PasswordEncoder passwordEncoder) {
         this.credentialRepository = credentialRepository;
         this.passwordEncoder = passwordEncoder;
@@ -34,13 +33,13 @@ public class CredentialREST {
     // This endpoint return the credential by id, while the id is the same of the credential.
     @GetMapping("/{id}")
     @PreAuthorize("#credential.id == #id")
-    public ResponseEntity<?> me(@AuthenticationPrincipal Credential credential, @PathVariable String id) {
+    public ResponseEntity<?> me(@AuthenticationPrincipal Credential credential, @PathVariable ObjectId id) {
         return ResponseEntity.ok(credentialRepository.findById(id));
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("#credential.id == #id")
-    public ResponseEntity<?> changePassword(@NotNull @AuthenticationPrincipal Credential credential,@PathVariable String id, @NotNull @Valid @RequestBody UpdateDTO dto) {
+    public ResponseEntity<?> changePassword(@NotNull @AuthenticationPrincipal Credential credential, @PathVariable ObjectId id, @NotNull @Valid @RequestBody UpdateDTO dto) {
         credential.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         credential.setEmail(dto.getNewEmail());
         credential.setUsername(dto.getNewUsername());
@@ -50,7 +49,7 @@ public class CredentialREST {
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("#credential.id == #id")
-    public ResponseEntity<?> delete(@NotNull @AuthenticationPrincipal Credential credential, @PathVariable String id) {
+    public ResponseEntity<?> delete(@NotNull @AuthenticationPrincipal Credential credential, @PathVariable ObjectId id) {
         credentialRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

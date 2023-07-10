@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StationRepository extends MongoRepository<Station, ObjectId> {
     Station findByName(String name);
+
     Void deleteByName(String name);
 }
