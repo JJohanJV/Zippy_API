@@ -16,7 +16,7 @@ public class CredentialService implements UserDetailsService {
     @Override
     public Credential loadUserByUsername(String username) throws UsernameNotFoundException {
         return credentialRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("username not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("username not found")).setAuthorities();
     }
 
     public Credential findById(ObjectId id) {

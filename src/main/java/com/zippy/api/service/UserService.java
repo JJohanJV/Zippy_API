@@ -5,6 +5,7 @@ import com.zippy.api.document.User;
 import com.zippy.api.dto.AddressDTO;
 import com.zippy.api.dto.BackupPersonDTO;
 import com.zippy.api.dto.UserDTO;
+import com.zippy.api.exception.UserNotFoundException;
 import com.zippy.api.models.*;
 import com.zippy.api.repository.BillingInformationRepository;
 import com.zippy.api.repository.UserRepository;
@@ -82,9 +83,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User getUserById(ObjectId id) {
-        return userRepository.findById(id).orElse(null);
+    public User getUserById(ObjectId id) throws UserNotFoundException {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("The user with id " + id + " was not found"));
     }
-
-
 }

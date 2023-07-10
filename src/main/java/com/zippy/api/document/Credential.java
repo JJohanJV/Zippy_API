@@ -1,7 +1,7 @@
 package com.zippy.api.document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zippy.api.constants.Role;
+import com.zippy.api.constants.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -11,10 +11,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 @AllArgsConstructor
 @Document
@@ -32,14 +34,21 @@ public class Credential implements UserDetails {
     @NonNull
     private String password;
     @NonNull
-    private Role role;
+    private Roles roles;
     @NotNull
     private ObjectId userId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.EMPTY_LIST;
+        // Aquí debes devolver una lista de GrantedAuthority basada en los roles del usuario
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Roles role : roles.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role.name()));
+        }
+        // Agrega más roles según la lógica de tu aplicación
+        return authorities;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

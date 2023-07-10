@@ -1,6 +1,6 @@
 package com.zippy.api.rest;
 
-import com.zippy.api.constants.Role;
+import com.zippy.api.constants.Roles;
 import com.zippy.api.document.Credential;
 import com.zippy.api.document.RefreshToken;
 import com.zippy.api.document.User;
@@ -56,6 +56,17 @@ public class AuthREST {
         this.userService = userService;
     }
 
+
+    /**
+     * The login function is responsible for authenticating the user and returning a JWT token.
+     *
+     *
+     * @param @Valid @RequestBody LoginDTO dto Create a new logindto object and pass in the username and password from the request body
+     *
+     * @return A responseentity with a credential object
+     *
+     * @docauthor Trelent
+     */
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO dto) {
@@ -89,10 +100,7 @@ public class AuthREST {
         if (credentialRepository.existsByUsername(credentialDTO.getUsername())) {
             return ResponseEntity.badRequest().body("El nombre de usuario ya existe");
         }
-        Role userRole = credentialDTO.getRole();
-        if (userRole == null) {
-            return ResponseEntity.badRequest().body("El campo 'role' es obligatorio");
-        }
+        Roles userRoles = Roles.CLIENT;
 
         ObjectId credentialId = new ObjectId();
         User user = userService.createNewUser(userDTO);
@@ -102,7 +110,7 @@ public class AuthREST {
                 credentialDTO.getUsername(),
                 user.getEmail(),
                 passwordEncoder.encode(credentialDTO.getPassword()),
-                userRole,
+                userRoles,
                 user.getId()
         );
 

@@ -1,6 +1,6 @@
 package com.zippy.api.dto;
 
-import com.zippy.api.constants.Role;
+import com.zippy.api.constants.Roles;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +18,5 @@ public class CredentialDTO {
     @NotBlank
     @Size(min = 6, max = 60)
     private String password;
-    private Role role;
+    private Roles roles;
 }

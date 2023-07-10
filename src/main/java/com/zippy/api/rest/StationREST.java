@@ -4,6 +4,7 @@ import com.zippy.api.service.StationService;
 import com.zippy.api.service.VehicleService;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,6 +38,7 @@ public class StationREST {
 //        return ResponseEntity.ok(stationService.addStation(name));
 //    }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> allStations() {
         return ResponseEntity.ok(stationService.allStations());
