@@ -21,4 +21,8 @@ public class Station {
     private int capacity;
     private List<VehicleStatusId> vehicleStatusIds;
     private StationStatus status;
+
+    public String getLocation() {
+        return location;
+    }
 }

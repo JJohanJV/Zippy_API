@@ -31,5 +31,5 @@ Obtener todos los viajes
 Crear reporte empleado
 Crear reporte usuario
 Crear calificacion de usuario y comentario de usuario (en una sola)
-
+Obtener historial de viajes usuario
 
