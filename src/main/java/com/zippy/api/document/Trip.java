@@ -40,8 +40,13 @@ public class Trip {
     private String userComment;
 
 
-    public Trip(ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId finishStationId, BigDecimal cost, TripStatus status, LocalDateTime deadLine) {
-        this.userId = userid;
-
+    public Trip(ObjectId id, ObjectId vehicleId, ObjectId startStationId, ObjectId finishStationId, BigDecimal cost, TripStatus status, LocalDateTime deadLine) {
+        this.id = id;
+        this.vehicleId = vehicleId;
+        this.startStationId = startStationId;
+        this.finishStationId = finishStationId;
+        this.cost = cost;
+        this.status = status;
+        this.deadLine = deadLine;
     }
 }

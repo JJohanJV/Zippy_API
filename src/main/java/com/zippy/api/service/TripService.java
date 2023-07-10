@@ -30,9 +30,7 @@ public class TripService {
     //Creación inicial del viaje
     public Trip createTrip (ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId){
 
-        Trip trip = tripRepository.insert(new Trip(userid, vehicleId, startStationId, endStationId, calculateCost(startStationId, endStationId), TripStatus.ACTIVE, calculateDeadline(startStationId, endStationId)));
-
-        return(trip);
+        return(tripRepository.insert(new Trip(userid, vehicleId, startStationId, endStationId, calculateCost(startStationId, endStationId), TripStatus.ACTIVE, calculateDeadline(startStationId, endStationId))));
     }
 
     private BigDecimal calculateCost (ObjectId startStationId, ObjectId endStationId) {

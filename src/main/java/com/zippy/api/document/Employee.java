@@ -7,9 +7,11 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import javax.validation.constraints.Email;
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Document
@@ -29,5 +31,6 @@ public class Employee {
     private String document;
     private DocumentType documentType;
     private Address address;
-    private DecimalFormat salary;
+    @Field(targetType = FieldType.DECIMAL128)
+    private BigDecimal salary;
 }
