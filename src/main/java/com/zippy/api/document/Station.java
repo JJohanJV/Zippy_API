@@ -6,6 +6,7 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import com.zippy.api.models.VehicleStatusId;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Station {
     private String name;
     private String location;
     private int capacity;
-    private List<Vehicle> vehicles;
+    private List<VehicleStatusId> vehicleStatusIds;
     private StationStatus status;
 
     public String getLocation() {

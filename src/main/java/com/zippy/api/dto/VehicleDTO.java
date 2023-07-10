@@ -1,11 +1,11 @@
 package com.zippy.api.dto;
 
+import com.zippy.api.constants.VehicleStatus;
+import com.zippy.api.constants.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.NoArgsConstructor;
-import com.zippy.api.constants.VehicleType;
-import com.zippy.api.constants.VehicleStatus;
+
 import java.time.LocalDateTime;
 
 @AllArgsConstructor

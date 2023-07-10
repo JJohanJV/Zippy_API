@@ -1,5 +1,7 @@
 package com.zippy.api.document;
 
+import com.zippy.api.constants.VehicleStatus;
+import com.zippy.api.constants.VehicleType;
 import com.zippy.api.models.Maintenance;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,24 +10,21 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
-
 import java.util.List;
-
-import com.zippy.api.constants.VehicleType;
-import com.zippy.api.constants.VehicleStatus;
 
 /**
  * Vehicle
- *
+ * <p>
  * This class is the representation of a vehicle in the database.
  *
  * @version 1.0
- * @since 1.0
  * @see VehicleType
  * @see VehicleStatus
  * @see Maintenance
  * @see com.zippy.api.repository.VehicleRepository
+ * @since 1.0
  */
 @Document
 @Data

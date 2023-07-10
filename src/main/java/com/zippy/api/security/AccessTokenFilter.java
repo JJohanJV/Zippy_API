@@ -4,6 +4,7 @@ import com.zippy.api.document.Credential;
 import com.zippy.api.jwt.JwtHelper;
 import com.zippy.api.service.CredentialService;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,8 +30,8 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             Optional<String> accessToken = parseAccessToken(request);
-            if(accessToken.isPresent() && jwtHelper.validateAccessToken(accessToken.get())) {
-                String userId = jwtHelper.getUserIdFromAccessToken(accessToken.get());
+            if (accessToken.isPresent() && jwtHelper.validateAccessToken(accessToken.get())) {
+                ObjectId userId = jwtHelper.getUserIdFromAccessToken(accessToken.get());
                 Credential credential = credentialService.findById(userId);
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(credential, null, credential.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -46,7 +47,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
 
     private Optional<String> parseAccessToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
-        if(StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             return Optional.of(authHeader.replace("Bearer ", ""));
         }
         return Optional.empty();

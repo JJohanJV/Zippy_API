@@ -3,24 +3,14 @@ package com.zippy.api.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import com.zippy.api.constants.Role;
 
 @Getter
 @Setter
 public class SignupDTO {
     @NotBlank
-    @Size(min = 3, max = 30)
-    private String username;
+    private CredentialDTO credential;
     @NotBlank
-    @Size(max = 60)
-    @Email
-    private String email;
-    @NotBlank
-    @Size(min = 6, max = 60)
-    private String password;
-    private Role role;
+    private UserDTO user;
+    private BillingInformationDTO billingInformation;
 }

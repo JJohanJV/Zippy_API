@@ -2,6 +2,7 @@ package com.zippy.api.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -11,7 +12,6 @@ public class Address {
     private String detail;
     @NotNull
     private City city;
-    private Country country;
     private State state;
-
+    private Country country;
 }
