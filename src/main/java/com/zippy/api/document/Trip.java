@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Document
@@ -24,7 +26,10 @@ public class Trip {
     private ObjectId vehicleId;
     private ObjectId startStationId;
     private ObjectId finishStationId;
-    private DecimalFormat cost;
+
+    @Field(targetType = FieldType.DECIMAL128)
+    private BigDecimal cost;
+
     private TripStatus status;
     private LocalDateTime reservedDate;
     private LocalDateTime deadLine;
@@ -35,7 +40,7 @@ public class Trip {
     private String userComment;
 
 
-    public Trip(ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId finishStationId, DecimalFormat cost, TripStatus status, LocalDateTime deadLine) {
+    public Trip(ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId finishStationId, BigDecimal cost, TripStatus status, LocalDateTime deadLine) {
         this.userId = userid;
 
     }
