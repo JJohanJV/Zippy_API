@@ -14,6 +14,4 @@ public class UpdateDTO {
     private String newUsername;
     @NotBlank
     private String newEmail;
-    @NotBlank
-    private String newPassword;
 }

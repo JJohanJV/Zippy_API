@@ -19,7 +19,7 @@ public class updateUserDTO {
     @NotBlank
     private String phone;
     @NotBlank
-    private AddressDTO address;
+    private Address address;
     @NotBlank
     private String occupation;
 }

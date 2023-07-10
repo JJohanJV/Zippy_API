@@ -1,13 +1,13 @@
 package com.zippy.api.rest;
 
-import com.zippy.api.constants.Role;
+import com.zippy.api.constants.Roles;
 import com.zippy.api.document.Credential;
 import com.zippy.api.document.RefreshToken;
-import com.zippy.api.document.User;
 import com.zippy.api.dto.*;
 import com.zippy.api.jwt.JwtHelper;
 import com.zippy.api.repository.CredentialRepository;
 import com.zippy.api.repository.RefreshTokenRepository;
+import com.zippy.api.service.AuthService;
 import com.zippy.api.service.CredentialService;
 import com.zippy.api.service.UserService;
 import org.bson.types.ObjectId;
@@ -35,36 +35,41 @@ public class AuthREST {
     private final RefreshTokenRepository refreshTokenRepository;
     private final CredentialRepository credentialRepository;
     private final JwtHelper jwtHelper;
-    private final PasswordEncoder passwordEncoder;
     private final CredentialService credentialService;
     private final UserService userService;
+    private final AuthService authService;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthREST(
             AuthenticationManager authenticationManager,
             RefreshTokenRepository refreshTokenRepository,
             CredentialRepository credentialRepository,
             JwtHelper jwtHelper,
-            PasswordEncoder passwordEncoder,
             CredentialService credentialService,
-            UserService userService) {
+            UserService userService,
+            AuthService authService,
+            PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.refreshTokenRepository = refreshTokenRepository;
         this.credentialRepository = credentialRepository;
         this.jwtHelper = jwtHelper;
-        this.passwordEncoder = passwordEncoder;
         this.credentialService = credentialService;
+        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
+        this.authService = authService;
     }
 
-    @PostMapping("/login")
-    @Transactional
-    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO dto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        Credential credential = (Credential) authentication.getPrincipal();
 
-        return getResponseEntity(credential);
-    }
+    /**
+     * The login function is responsible for authenticating the user and returning a JWT token.
+     *
+     *
+     * @param @Valid @RequestBody LoginDTO dto Create a new logindto object and pass in the username and password from the request body
+     *
+     * @return A responseentity with a credential object
+     *
+     * @docauthor Trelent
+     */
 
     @NotNull
     private ResponseEntity<?> getResponseEntity(Credential credential) {
@@ -78,37 +83,37 @@ public class AuthREST {
         return ResponseEntity.ok(new TokenDTO(credential.getId(), accessToken, refreshTokenString));
     }
 
-    @PostMapping("signup")
+    @PostMapping("/login")
     @Transactional
-    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto) {
-        CredentialDTO credentialDTO = dto.getCredential();
-        UserDTO userDTO = dto.getUser();
-        if (credentialRepository.existsByEmail(userDTO.getEmail())) {
-            return ResponseEntity.badRequest().body("El correo electrónico ya existe");
-        }
-        if (credentialRepository.existsByUsername(credentialDTO.getUsername())) {
-            return ResponseEntity.badRequest().body("El nombre de usuario ya existe");
-        }
-        Role userRole = credentialDTO.getRole();
-        if (userRole == null) {
-            return ResponseEntity.badRequest().body("El campo 'role' es obligatorio");
-        }
-
-        ObjectId credentialId = new ObjectId();
-        User user = userService.createNewUser(userDTO);
-
-        Credential credential = new Credential(
-                credentialId,
-                credentialDTO.getUsername(),
-                user.getEmail(),
-                passwordEncoder.encode(credentialDTO.getPassword()),
-                userRole,
-                user.getId()
-        );
-
-        credentialRepository.save(credential);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO dto) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Credential credential = (Credential) authentication.getPrincipal();
 
         return getResponseEntity(credential);
+    }
+
+    @PostMapping("signup")
+    @Transactional
+    public ResponseEntity<?> signup(@NotNull @Valid @RequestBody SignupDTO dto) {
+        if (credentialRepository.existsByEmail(dto.getCredential().getEmail())) {
+            return ResponseEntity.badRequest().body("El correo electrónico ya existe");
+        }
+        if (credentialRepository.existsByUsername(dto.getCredential().getUsername())) {
+            return ResponseEntity.badRequest().body("El nombre de usuario ya existe");
+        }
+        return getResponseEntity(
+                credentialRepository.save(
+                        new Credential(
+                            new ObjectId(),
+                            dto.getCredential().getUsername(),
+                            passwordEncoder.encode(dto.getCredential().getPassword()),
+                            dto.getCredential().getEmail(),
+                            Roles.CLIENT,
+                            userService.createNewUser(dto.getUser()).getId()
+                        )
+                )
+        );
     }
 
     @PostMapping("logout")
@@ -131,7 +136,7 @@ public class AuthREST {
             throw new BadCredentialsException("invalid token");
         } else {
             // valid and exists in db
-
+            authService.deleteRefreshTokenByOwner_Id(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
             refreshTokenRepository.deleteByOwner_Id(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
             return ResponseEntity.ok().build();
         }

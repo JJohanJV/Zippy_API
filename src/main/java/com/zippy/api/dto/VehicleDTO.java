@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -14,10 +15,13 @@ import java.time.LocalDateTime;
 public class VehicleDTO {
     private VehicleType type;
     private String model;
+    @NotBlank
     private String serial;
+    @NotBlank
     private String gpsSerial;
     private VehicleStatus status;
-    private LocalDateTime startUpDate;
+    private String startUpDate;
+    @NotBlank
     private boolean isElectric;
     private int battery;
 }

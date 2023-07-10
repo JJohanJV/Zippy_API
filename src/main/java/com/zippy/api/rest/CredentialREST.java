@@ -2,7 +2,8 @@ package com.zippy.api.rest;
 
 import com.zippy.api.document.Credential;
 import com.zippy.api.dto.UpdateDTO;
-import com.zippy.api.repository.CredentialRepository;
+import com.zippy.api.service.AuthService;
+import com.zippy.api.service.CredentialService;
 import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,15 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/credentials")
 public class CredentialREST {
-    private final CredentialRepository credentialRepository;
+    private final CredentialService credentialService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
-    public CredentialREST(CredentialRepository credentialRepository, PasswordEncoder passwordEncoder) {
-        this.credentialRepository = credentialRepository;
+
+    public CredentialREST(PasswordEncoder passwordEncoder, AuthService authService, CredentialService credentialService) {
+        this.credentialService = credentialService;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
     // This endpoint returns the currently authenticated credential
@@ -34,23 +38,37 @@ public class CredentialREST {
     @GetMapping("/{id}")
     @PreAuthorize("#credential.id == #id")
     public ResponseEntity<?> me(@AuthenticationPrincipal Credential credential, @PathVariable ObjectId id) {
-        return ResponseEntity.ok(credentialRepository.findById(id));
+        return ResponseEntity.ok(credentialService.findById(id));
     }
 
-    @PutMapping("/update/{id}")
-    @PreAuthorize("#credential.id == #id")
-    public ResponseEntity<?> changePassword(@NotNull @AuthenticationPrincipal Credential credential, @PathVariable ObjectId id, @NotNull @Valid @RequestBody UpdateDTO dto) {
-        credential.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+    @GetMapping("/get/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getCredential(@PathVariable ObjectId id) {
+        return ResponseEntity.ok(credentialService.findById(id));
+    }
+
+    @PutMapping("/update/")
+    public ResponseEntity<?> changePassword(@NotNull @AuthenticationPrincipal Credential credential,@NotNull @Valid @RequestBody UpdateDTO dto) {
         credential.setEmail(dto.getNewEmail());
         credential.setUsername(dto.getNewUsername());
-        credentialRepository.save(credential);
+        credentialService.updateCredential(credential);
         return ResponseEntity.ok(credential);
     }
 
-    @DeleteMapping("/delete/{id}")
-    @PreAuthorize("#credential.id == #id")
-    public ResponseEntity<?> delete(@NotNull @AuthenticationPrincipal Credential credential, @PathVariable ObjectId id) {
-        credentialRepository.deleteById(id);
+    @PutMapping("/update/password/")
+    public ResponseEntity<?> changePassword(@NotNull @AuthenticationPrincipal Credential credential, @NotNull @Valid @RequestBody String newPassword) {
+        credential.setPassword(passwordEncoder.encode(newPassword));
+        credentialService.updateCredential(credential);
+        return ResponseEntity.ok(credential);
+    }
+
+    @DeleteMapping("/delete/")
+    public ResponseEntity<?> delete(@NotNull @AuthenticationPrincipal Credential credential,@NotNull @RequestBody String password) {
+        if (!passwordEncoder.matches(password, credential.getPassword())) { 
+            return ResponseEntity.badRequest().build();
+        }
+        credentialService.deleteCredential(credential);
+        authService.deleteRefreshTokenByOwner_Id(credential.getId());
         return ResponseEntity.ok().build();
     }
 }

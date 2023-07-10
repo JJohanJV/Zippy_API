@@ -7,6 +7,7 @@ import com.zippy.api.models.VehicleStatusId;
 import com.zippy.api.repository.StationRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class StationService {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public Station addStation(Station station) {
         return stationRepository.save(station);
     }
