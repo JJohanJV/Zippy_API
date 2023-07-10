@@ -12,5 +12,4 @@ public class SignupDTO {
     private CredentialDTO credential;
     @NotBlank
     private UserDTO user;
-    private BillingInformationDTO billingInformation;
 }
