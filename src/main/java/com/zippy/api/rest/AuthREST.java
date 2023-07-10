@@ -10,6 +10,7 @@ import com.zippy.api.repository.RefreshTokenRepository;
 import com.zippy.api.service.AuthService;
 import com.zippy.api.service.CredentialService;
 import com.zippy.api.service.UserService;
+import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +18,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.zippy.api.service.AuthService;
 
 import javax.validation.Valid;
 
@@ -37,6 +38,7 @@ public class AuthREST {
     private final CredentialService credentialService;
     private final UserService userService;
     private final AuthService authService;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthREST(
             AuthenticationManager authenticationManager,
@@ -45,12 +47,14 @@ public class AuthREST {
             JwtHelper jwtHelper,
             CredentialService credentialService,
             UserService userService,
-            AuthService authService) {
+            AuthService authService,
+            PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.refreshTokenRepository = refreshTokenRepository;
         this.credentialRepository = credentialRepository;
         this.jwtHelper = jwtHelper;
         this.credentialService = credentialService;
+        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.authService = authService;
     }
@@ -99,11 +103,16 @@ public class AuthREST {
             return ResponseEntity.badRequest().body("El nombre de usuario ya existe");
         }
         return getResponseEntity(
-                    credentialService.createNewCredentialByDto(
-                            dto.getCredential(),
-                            userService.createNewUser(dto.getUser()).getId(),
-                            Roles.CLIENT
-                    )
+                credentialRepository.save(
+                        new Credential(
+                            new ObjectId(),
+                            dto.getCredential().getUsername(),
+                            passwordEncoder.encode(dto.getCredential().getPassword()),
+                            dto.getCredential().getEmail(),
+                            Roles.CLIENT,
+                            userService.createNewUser(dto.getUser()).getId()
+                        )
+                )
         );
     }
 
