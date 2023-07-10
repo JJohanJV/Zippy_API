@@ -4,12 +4,16 @@ import com.zippy.api.constants.Roles;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class CredentialDTO {
+    @NotBlank
+    @Email
+    private String email;
     @NotBlank
     @Size(min = 3, max = 30)
     private String username;
