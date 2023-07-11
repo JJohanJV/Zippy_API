@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zippy.api.constants.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Document
 @Data
 public class Credential implements UserDetails {
@@ -34,7 +36,7 @@ public class Credential implements UserDetails {
     @NonNull
     private String password;
     @NonNull
-    private Roles roles;
+    private Roles role;
     @NotNull
     private ObjectId userId;
 
@@ -42,9 +44,7 @@ public class Credential implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Aquí debes devolver una lista de GrantedAuthority basada en los roles del usuario
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Roles role : roles.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.name()));
-        }
+        authorities.add(new SimpleGrantedAuthority(role.name()));
         // Agrega más roles según la lógica de tu aplicación
         return authorities;
     }

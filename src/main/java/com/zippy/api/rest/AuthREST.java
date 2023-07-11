@@ -59,18 +59,6 @@ public class AuthREST {
         this.authService = authService;
     }
 
-
-    /**
-     * The login function is responsible for authenticating the user and returning a JWT token.
-     *
-     *
-     * @param @Valid @RequestBody LoginDTO dto Create a new logindto object and pass in the username and password from the request body
-     *
-     * @return A responseentity with a credential object
-     *
-     * @docauthor Trelent
-     */
-
     @NotNull
     private ResponseEntity<?> getResponseEntity(Credential credential) {
         RefreshToken refreshToken = new RefreshToken();
