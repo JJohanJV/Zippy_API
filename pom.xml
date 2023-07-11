@@ -8,11 +8,11 @@
 		<version>2.7.14-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.alibou</groupId>
-	<artifactId>security</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>security</name>
-	<description>Demo project for Spring Boot</description>
+	<groupId>com.zippy</groupId>
+	<artifactId>api</artifactId>
+	<version>1</version>
+	<name>api</name>
+	<description>Api para zippy</description>
 	<properties>
 		<java.version>20</java.version>
 	</properties>

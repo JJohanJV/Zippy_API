@@ -3,15 +3,19 @@ package com.zippy.api.service;
 import com.zippy.api.document.Credential;
 import com.zippy.api.repository.CredentialRepository;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CredentialService implements UserDetailsService {
-    @Autowired
-    CredentialRepository credentialRepository;
+    private final CredentialRepository credentialRepository;
+    private final UserService userService;
+
+    public CredentialService(CredentialRepository credentialRepository,  UserService userService) {
+        this.credentialRepository = credentialRepository;
+        this.userService = userService;
+    }
 
     @Override
     public Credential loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -22,5 +26,14 @@ public class CredentialService implements UserDetailsService {
     public Credential findById(ObjectId id) {
         return credentialRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("user id not found"));
+    }
+
+    public void deleteCredential(Credential credential) {
+        userService.deleteUserById(credential.getUserId());
+        credentialRepository.deleteById(credential.getId());
+    }
+
+    public Credential updateCredential(Credential credential){
+        return credentialRepository.save(credential);
     }
 }
