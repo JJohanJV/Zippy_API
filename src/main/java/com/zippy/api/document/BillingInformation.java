@@ -1,11 +1,15 @@
 package com.zippy.api.document;
 
+import com.zippy.api.models.Card;
+import com.zippy.api.models.Wallet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Data
 @Document
@@ -14,4 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class BillingInformation {
     @Id
     private ObjectId id;
+    private List<Card> cards;
+    private Wallet wallet;
+
 }

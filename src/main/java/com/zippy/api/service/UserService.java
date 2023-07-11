@@ -4,6 +4,7 @@ import com.zippy.api.document.BillingInformation;
 import com.zippy.api.document.User;
 import com.zippy.api.dto.UserDTO;
 import com.zippy.api.exception.UserNotFoundException;
+import com.zippy.api.models.Wallet;
 import com.zippy.api.repository.BillingInformationRepository;
 import com.zippy.api.repository.UserRepository;
 import org.bson.types.ObjectId;
@@ -25,6 +26,13 @@ public class UserService {
 
     public User createNewUser(@Valid UserDTO userDTO) {
         BillingInformation billingInformation = new BillingInformation();
+        billingInformation.setWallet(new Wallet());
+        billingInformation.setId(new ObjectId());
+        if(userDTO.getCards() == null){
+            billingInformation.setCards(null);
+        }else {
+            billingInformation.setCards(userDTO.getCards());
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime birthday = LocalDateTime.parse(userDTO.getBirthday(), formatter);
