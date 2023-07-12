@@ -1,17 +1,15 @@
 package com.zippy.api.service;
 
 import com.zippy.api.constants.TripStatus;
-import com.zippy.api.document.Station;
 import com.zippy.api.document.Trip;
-import com.zippy.api.repository.StationRepository;
 import com.zippy.api.repository.TripRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
+import static java.lang.System.*;
 
 
 @Service
@@ -19,40 +17,33 @@ public class TripService {
 
     private final TripRepository tripRepository;
 
-
-    private final StationRepository stationRepository;
-
-    public TripService(TripRepository tripRepository, StationRepository stationRepository) {
+    public TripService(TripRepository tripRepository) {
         this.tripRepository = tripRepository;
-        this.stationRepository = stationRepository;
     }
 
     //Creación inicial del viaje
-    public Trip createTrip (ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId){
+    public Trip createTrip (ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, BigDecimal distance, int duration){
 
-        return(tripRepository.insert(new Trip(userid, vehicleId, startStationId, endStationId, calculateCost(startStationId, endStationId), TripStatus.ACTIVE, calculateDeadline(startStationId, endStationId))));
+        return(tripRepository.insert(new Trip(userid, vehicleId, startStationId, endStationId, calculateCost(distance), TripStatus.ACTIVE, calculateDeadline(duration))));
     }
 
-    private BigDecimal calculateCost (ObjectId startStationId, ObjectId endStationId) {
+    public BigDecimal calculateCost (BigDecimal distance) {
 
         BigDecimal cost = BigDecimal.valueOf(1000);
-        BigDecimal distance = BigDecimal.valueOf(1000);
-
-        //obtenemos las coordenadas de las estaciones
-        Optional<Station> startStation = stationRepository.findById(startStationId);
-        Optional<Station> endStation = stationRepository.findById(endStationId);
-
-        if (startStation.isPresent() && endStation.isPresent()) {
-            String startLocation = startStation.get().getLocation();
-            String endLocation = endStation.get().getLocation();
-        }
+        int multiplyPriceFactor = 2;
+        //Se calcula proporcional al precio base, tomando la distacia en kilometros dividida en 100 y multiplicada por un factor aumentador del precio
+        cost = cost.add(cost.multiply(distance.divide(BigDecimal.valueOf(100/multiplyPriceFactor))));
 
         return cost;
     }
 
 
-    private LocalDateTime calculateDeadline(ObjectId startStationId, ObjectId endStationId){
-        LocalDateTime deadline = LocalDateTime.now().plusMinutes(30);
+    private LocalDateTime calculateDeadline(int duration){
+
+        int extraMinutes = 10;
+        LocalDateTime deadline = LocalDateTime.now().plusMinutes(duration+extraMinutes);
+
         return deadline;
+
     }
 }
