@@ -2,6 +2,7 @@ package com.zippy.api.config;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ public class Config extends AbstractMongoClientConfiguration {
     @Value("${spring.data.mongodb.uri}")
     private String mongoDbUri;
 
+    @NotNull
     @Override
     protected String getDatabaseName() {
         return databaseName;
@@ -29,6 +31,7 @@ public class Config extends AbstractMongoClientConfiguration {
         return true;
     }
 
+    @NotNull
     public @Bean MongoClient mongoClient() {
         return MongoClients.create(mongoDbUri);
     }
