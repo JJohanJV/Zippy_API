@@ -25,7 +25,7 @@ public class Trip {
     private ObjectId userId;
     private ObjectId vehicleId;
     private ObjectId startStationId;
-    private ObjectId finishStationId;
+    private ObjectId endStationId;
 
     @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal cost;
@@ -40,13 +40,14 @@ public class Trip {
     private String userComment;
 
 
-    public Trip(ObjectId id, ObjectId vehicleId, ObjectId startStationId, ObjectId finishStationId, BigDecimal cost, TripStatus status, LocalDateTime deadLine) {
-        this.id = id;
+    public Trip(ObjectId userId, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, LocalDateTime startDate, TripStatus status,  BigDecimal cost, LocalDateTime deadLine) {
+        this.id = userId;
         this.vehicleId = vehicleId;
         this.startStationId = startStationId;
-        this.finishStationId = finishStationId;
+        this.endStationId = endStationId;
         this.cost = cost;
         this.status = status;
         this.deadLine = deadLine;
+        this.startDate = startDate;
     }
 }
