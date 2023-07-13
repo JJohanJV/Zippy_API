@@ -41,7 +41,7 @@ public class Trip {
 
 
     public Trip(ObjectId userId, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, LocalDateTime startDate, TripStatus status,  BigDecimal cost, LocalDateTime deadLine) {
-        this.id = userId;
+        this.userId = userId;
         this.vehicleId = vehicleId;
         this.startStationId = startStationId;
         this.endStationId = endStationId;

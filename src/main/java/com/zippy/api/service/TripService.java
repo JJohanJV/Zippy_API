@@ -1,8 +1,11 @@
 package com.zippy.api.service;
 
 import com.zippy.api.constants.TripStatus;
+import com.zippy.api.constants.VehicleStatus;
 import com.zippy.api.document.Trip;
+import com.zippy.api.document.Vehicle;
 import com.zippy.api.exception.StationNotFoundException;
+import com.zippy.api.exception.TripNotFoundException;
 import com.zippy.api.repository.TripRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -23,19 +26,15 @@ public class TripService {
         this.tripRepository = tripRepository;
         this.vehicleService = vehicleService;
     }
-    public Trip getTripById(ObjectId tripId) throws StationNotFoundException {
+    public Trip getTripById(ObjectId tripId) throws TripNotFoundException {
         return tripRepository.findById(tripId).orElseThrow(() -> new StationNotFoundException("El id de la estación no existe"));
     }
     //Instant creation of a travel
-    public Trip createTrip (
-            ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, BigDecimal distance, int duration) {
-
-        return(
-                tripRepository.insert(
-                        new Trip(userid, vehicleId, startStationId, endStationId, LocalDateTime.now(), TripStatus.ACTIVE, calculateInitialCost(distance, vehicleId), calculateDeadline(duration))
-                )
-        );
-
+    public Trip createTrip (ObjectId userid, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, BigDecimal distance, int duration) {
+            return
+                    tripRepository.insert(
+                            new Trip(userid, vehicleId, startStationId, endStationId, LocalDateTime.now(), TripStatus.ACTIVE, calculateInitialCost(distance, vehicleId), calculateDeadline(duration))
+                    );
     }
 
     public BigDecimal calculateInitialCost (BigDecimal distance, ObjectId vehicleId) {
