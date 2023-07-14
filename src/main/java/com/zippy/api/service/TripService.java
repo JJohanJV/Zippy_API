@@ -43,9 +43,7 @@ public class TripService {
                     );
     }
 
-    public void EndTrip () {
-
-    }
+    public void EndTrip () {}
     public BigDecimal calculateInitialCost (BigDecimal distance, ObjectId vehicleId) {
 
         //Cheaper price for Not electric vehicles

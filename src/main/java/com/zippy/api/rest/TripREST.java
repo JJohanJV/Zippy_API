@@ -36,6 +36,6 @@ public class TripREST {
         if (vehicleService.getVehicleById(dto.getVehicleId()).getStatus() != VehicleStatus.AVAILABLE) {
             return ResponseEntity.badRequest().body("The status of the vehicle is not longer available");
         } else
-            return ResponseEntity.ok(tripService.createTrip(credential.getUserId(), dto.getVehicleId(), dto.getStartStationId(), dto.getEndStationId(), dto.getDistance(), dto.getDuration()));
+            return ResponseEntity.ok(tripService.startTrip(credential.getUserId(), dto.getVehicleId(), dto.getStartStationId(), dto.getEndStationId(), dto.getDistance(), dto.getDuration()));
         }
     };
