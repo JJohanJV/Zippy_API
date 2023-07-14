@@ -4,7 +4,8 @@ import com.zippy.api.constants.TripStatus;
 import com.zippy.api.models.Report;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,7 +18,8 @@ import java.time.LocalDateTime;
 @Document
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
+@Accessors(chain = true)
 public class Trip {
 
     @Id
@@ -39,15 +41,4 @@ public class Trip {
     private int userRating;
     private String userComment;
 
-
-    public Trip(ObjectId userId, ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, LocalDateTime startDate, TripStatus status,  BigDecimal cost, LocalDateTime deadLine) {
-        this.userId = userId;
-        this.vehicleId = vehicleId;
-        this.startStationId = startStationId;
-        this.endStationId = endStationId;
-        this.cost = cost;
-        this.status = status;
-        this.deadLine = deadLine;
-        this.startDate = startDate;
-    }
 }
