@@ -4,13 +4,11 @@ import com.zippy.api.constants.VehicleStatus;
 import com.zippy.api.constants.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
 @Getter
-@Setter
 public class VehicleDTO {
     private VehicleType type;
     private String model;
