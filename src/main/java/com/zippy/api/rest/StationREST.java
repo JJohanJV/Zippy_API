@@ -4,7 +4,7 @@ import com.zippy.api.document.Station;
 import com.zippy.api.dto.StationDTO;
 import com.zippy.api.models.GeoJsonStation;
 import com.zippy.api.models.GeoJsonStationCollection;
-import com.zippy.api.models.geoJsonResponse.FeatureCollection;
+import com.zippy.api.models.geoJsonResponse.GeoJsonResponseWraper;
 import com.zippy.api.service.StationService;
 import com.zippy.api.service.VehicleService;
 import org.bson.types.ObjectId;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 
 @RestController
@@ -87,14 +86,13 @@ public class StationREST {
 
     @GetMapping("/route/{start}/{end}")
     public ResponseEntity<?> getRoute(@PathVariable ObjectId start, @PathVariable ObjectId end) {
-        Optional<FeatureCollection> route = stationService.calculateRoute(
-                stationService.getById(start),
-                stationService.getById(end)
+        GeoJsonResponseWraper route = stationService.calculateRoute(
+                stationService.getById(start), stationService.getById(end)
         );
-        if (route.isPresent()) {
-            return ResponseEntity.ok(route.get());
-        }
-        return ResponseEntity.badRequest().build();
+        if (route.statusCode() == 200)
+            return ResponseEntity.ok(route.featureCollection());
+        else
+            return ResponseEntity.badRequest().body(route);
     }
 
 }

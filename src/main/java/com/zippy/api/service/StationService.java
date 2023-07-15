@@ -12,6 +12,7 @@ import com.zippy.api.exception.VehicleNotFoundException;
 import com.zippy.api.models.VehicleStatusId;
 import com.zippy.api.models.geoJsonRequest.GeoRequest;
 import com.zippy.api.models.geoJsonResponse.FeatureCollection;
+import com.zippy.api.models.geoJsonResponse.GeoJsonResponseWraper;
 import com.zippy.api.repository.StationRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -107,7 +108,7 @@ public class StationService {
                 .toList();
     }
 
-    public Optional<FeatureCollection> calculateRoute(Station startStation, Station endStation) {
+    public GeoJsonResponseWraper calculateRoute(Station startStation, Station endStation) {
         try {
             GeoRequest requestValue = new GeoRequest()
                     .coordinates(new Double[][]{
@@ -133,17 +134,17 @@ public class StationService {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            //int statusCode = response.statusCode();
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            if (response.statusCode() != 200) {
-                System.out.println(response.body());
-                return Optional.empty();
-            }
-            return Optional.ofNullable(objectMapper.readValue(response.body(), FeatureCollection.class));
+            return new GeoJsonResponseWraper()
+                    .statusCode(response.statusCode())
+                    .statusMessage(response.body())
+                    .featureCollection(Optional.ofNullable(objectMapper.readValue(response.body(), FeatureCollection.class)));
         } catch (Exception e) {
             e.printStackTrace();
-            return Optional.empty();
+            return new GeoJsonResponseWraper()
+                    .statusCode(500)
+                    .statusMessage("Error al calcular la ruta");
         }
     }
 }
