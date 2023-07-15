@@ -86,13 +86,16 @@ public class StationREST {
 
     @GetMapping("/route/{start}/{end}")
     public ResponseEntity<?> getRoute(@PathVariable ObjectId start, @PathVariable ObjectId end) {
-        GeoJsonResponseWraper route = stationService.calculateRoute(
-                stationService.getById(start), stationService.getById(end)
-        );
-        if (route.statusCode() == 200)
-            return ResponseEntity.ok(route.featureCollection());
-        else
-            return ResponseEntity.badRequest().body(route);
+        try {
+            GeoJsonResponseWraper route = stationService.calculateRoute(
+                    stationService.getById(start), stationService.getById(end)
+            );
+            if (route.statusCode() == 200)
+                return ResponseEntity.ok(route.featureCollection());
+            else
+                return ResponseEntity.internalServerError().body(route.statusMessage());
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-
 }

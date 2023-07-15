@@ -125,7 +125,7 @@ public class StationService {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("https://api.openrouteservice.org/v2/directions/driving-car/geojson"))
-                    .header("Authorization", "5b3ce3597851110001cf62483d251f50bfe34769a78aaa5dda0ca4c8")
+                    .header("Authorization", "${com.zippy.api.openroutekey")
                     .header("Accept", "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8")
                     .header("Content-Type", "application/json; charset=utf-8")
                     .POST(HttpRequest.BodyPublishers.ofString(payload))
