@@ -6,6 +6,10 @@ import com.zippy.api.exception.StationNotFoundException;
 import com.zippy.api.exception.TripNotFoundException;
 import com.zippy.api.repository.TripRepository;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,9 +24,11 @@ public class TripService {
     private final TripRepository tripRepository;
     private final VehicleService vehicleService;
 
-    public TripService(TripRepository tripRepository, VehicleService vehicleService) {
+    private final MongoTemplate mongoTemplate;
+    public TripService(TripRepository tripRepository, VehicleService vehicleService, MongoTemplate mongoTemplate) {
         this.tripRepository = tripRepository;
         this.vehicleService = vehicleService;
+        this.mongoTemplate = mongoTemplate;
     }
     public Trip getTripById(ObjectId tripId) throws TripNotFoundException {
         return tripRepository.findById(tripId).orElseThrow(() -> new StationNotFoundException("El id de la estación no existe"));
@@ -43,7 +49,19 @@ public class TripService {
                     );
     }
 
-    public void EndTrip () {}
+    public void endTrip (ObjectId tripId) {
+        BigDecimal cost = calculateFinalCost(tripId);
+
+        //Declare the query to update the database using mongoTemplate
+        Query query = new Query(Criteria.where("_id").is(tripId));
+        Update update = new Update()
+                .set("status", TripStatus.COMPLETED)
+                .set("cost",cost);
+        mongoTemplate.updateFirst(query, update, Trip.class);
+
+        //We still need to change the vehicle status to available
+
+    }
     public BigDecimal calculateInitialCost (BigDecimal distance, ObjectId vehicleId) {
 
         //Cheaper price for Not electric vehicles
