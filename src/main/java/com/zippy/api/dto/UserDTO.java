@@ -5,6 +5,7 @@ import com.zippy.api.models.Address;
 import com.zippy.api.models.BackupPerson;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@Accessors(fluent = true)
 public class UserDTO {
     @NotBlank
     private String email;
