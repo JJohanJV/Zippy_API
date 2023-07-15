@@ -139,7 +139,9 @@ public class StationService {
             return new GeoJsonResponseWraper()
                     .statusCode(response.statusCode())
                     .statusMessage(response.body())
-                    .featureCollection(Optional.ofNullable(objectMapper.readValue(response.body(), FeatureCollection.class)));
+                    .featureCollection(Optional.ofNullable(objectMapper.readValue(response.body(), FeatureCollection.class))
+                            .orElseThrow(() -> new Exception("Error al parsear la respuesta de la API de rutas")
+                            ));
         } catch (Exception e) {
             e.printStackTrace();
             return new GeoJsonResponseWraper()
