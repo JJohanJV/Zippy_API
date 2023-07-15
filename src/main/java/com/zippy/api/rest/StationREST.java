@@ -2,9 +2,9 @@ package com.zippy.api.rest;
 
 import com.zippy.api.document.Station;
 import com.zippy.api.dto.StationDTO;
-import com.zippy.api.models.GeoJsonResponse.FeatureCollection;
 import com.zippy.api.models.GeoJsonStation;
 import com.zippy.api.models.GeoJsonStationCollection;
+import com.zippy.api.models.geoJsonResponse.FeatureCollection;
 import com.zippy.api.service.StationService;
 import com.zippy.api.service.VehicleService;
 import org.bson.types.ObjectId;

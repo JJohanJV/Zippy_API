@@ -1,4 +1,4 @@
-package com.zippy.api.models.GeoJsonRequest;
+package com.zippy.api.models.geoJsonRequest;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

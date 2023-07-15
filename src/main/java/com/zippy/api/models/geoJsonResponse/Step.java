@@ -1,4 +1,4 @@
-package com.zippy.api.models.GeoJsonResponse;
+package com.zippy.api.models.geoJsonResponse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

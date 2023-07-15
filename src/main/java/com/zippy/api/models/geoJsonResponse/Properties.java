@@ -1,4 +1,4 @@
-package com.zippy.api.models.GeoJsonResponse;
+package com.zippy.api.models.geoJsonResponse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class Properties {
     @JsonProperty("fare")
     private int fare;
     @JsonProperty("segments")
-    private Segments segments[];
+    private Segments[] segments;
     @JsonProperty("summary")
     private Summary summary;
 }

@@ -29,13 +29,13 @@ public class TripREST {
     @GetMapping("/pruebaRapida")
     public ResponseEntity<BigDecimal> calculateCost() {
         return ResponseEntity.ok(tripService.calculateFinalCost(LocalDateTime.now().minusMinutes(30), BigDecimal.valueOf(1340)));
-    };
+    }
 
     @PostMapping("/startNewTrip")
     public ResponseEntity<?> startNewTrip (@AuthenticationPrincipal Credential credential , @NotNull @Valid @RequestBody TripDTO dto) {
-        if (vehicleService.getVehicleById(dto.getVehicleId()).getStatus() != VehicleStatus.AVAILABLE) {
+        if (vehicleService.getById(dto.getVehicleId()).getStatus() != VehicleStatus.AVAILABLE) {
             return ResponseEntity.badRequest().body("The status of the vehicle is not longer available");
         } else
             return ResponseEntity.ok(tripService.startTrip(credential.getUserId(), dto.getVehicleId(), dto.getStartStationId(), dto.getEndStationId(), dto.getDistance(), dto.getDuration()));
         }
-    };
+}

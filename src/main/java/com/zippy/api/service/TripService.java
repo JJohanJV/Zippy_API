@@ -47,7 +47,7 @@ public class TripService {
     public BigDecimal calculateInitialCost (BigDecimal distance, ObjectId vehicleId) {
 
         //Cheaper price for Not electric vehicles
-        boolean isElectric = vehicleService.getVehicleById(vehicleId).isElectric();
+        boolean isElectric = vehicleService.getById(vehicleId).isElectric();
         BigDecimal baseCost = isElectric ? BigDecimal.valueOf(1000) : BigDecimal.valueOf(500);
 
         //Se calcula proporcional al precio base, tomando la distacia en kilometros dividida en 100 y multiplicada por un factor aumentador del precio
