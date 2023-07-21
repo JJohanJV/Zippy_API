@@ -42,7 +42,7 @@ public class Vehicle {
     private String model;
     private VehicleType type;
     private VehicleStatus status;
-    private int Kilometers;
+    private int kilometers;
     private LocalDateTime startUpDate;
     private boolean isElectric;
     private int battery;
