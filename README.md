@@ -81,7 +81,7 @@ A continuación la documentación de los principales endpoints:
   <br>
   Condiciones: El usuario debe tener un viaje reservado.
 
--/cancelReserveTrip
+- /cancelReserveTrip
   <br><br>
   Requiere token de acceso
   <br>
@@ -89,7 +89,7 @@ A continuación la documentación de los principales endpoints:
   <br>
   Condiciones: El usuario debe tener un viaje reservado.
 
--/endActualTrip
+- /endActualTrip
   <br><br>
   Requiere token de acceso
   <br>
