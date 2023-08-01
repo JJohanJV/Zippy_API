@@ -1,15 +1,31 @@
 # Zippy_API
 Desarrollo del backend con RESTAPIs en SpringBoot para Zippy. 
 
-Entre sus principales funciones se destaca:
+Se destaca:
 
-- Autenticación con Tokens
+- Autenticación con Tokens (Spring security y spring oauth)
 - Roles
+- Spring Data MongoDB
 - Endpoints que satisfacen la logica del negocio.
 
+Como base de datos se eligió monogoDB, dada su rapidez, pero con las suficientes reglas de validación en las colecciones para intentar garantizar la consistrencia de los datos.
+pd: Se usó el ingles para evitar bugs por caracteres especiales y sacar provecho del nivel de los integrantes del equipo en el idioma.
+
+## Documentos
+
+Se trabaja en base a las siguientes entidades que se representan una colección en base de datos
+
+- User
+- Billing information
+- Employee
+- Vehicle
+- Station
+- Trip
+- Credential
+- Refresh token
 
 
-  
+
 ## ¿Qué es "Zippy"?
 
 ### Misión
@@ -18,7 +34,12 @@ En Zippy, nuestra misión es revolucionar el transporte en Bucaramanga al ofrece
 
 ### Propuesta Única de Valor (PUV)
 
-Zippy se distinguirá por ser la primera startup dedicada al alquiler de vehículos eléctricos en Bucaramanga. Nuestra plataforma ofrecerá una experiencia integral a los usuarios, permitiéndoles gestionar sus viajes diarios de manera práctica y segura. A través de nuestra aplicación, los usuarios podrán: - Encontrar estaciones cercanas - Reservar vehículos - Conocer la disponibilidad en tiempo real - visualizar rutas seguras - Realizar pagos de forma sencilla y conveniente.
+Zippy se distinguirá por ser la primera startup dedicada al alquiler de vehículos eléctricos en Bucaramanga. Nuestra plataforma ofrecerá una experiencia integral a los usuarios, permitiéndoles gestionar sus viajes diarios de manera práctica y segura. A través de nuestra aplicación, los usuarios podrán: 
+- Encontrar estaciones cercanas
+- Reservar vehículos
+- Conocer la disponibilidad en tiempo real
+- visualizar rutas seguras
+- Realizar pagos de forma sencilla y conveniente.
 
 ### Oportunidad y Mercado
 
