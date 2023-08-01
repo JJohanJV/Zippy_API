@@ -1,6 +1,15 @@
 # Zippy_API
-Desarrollo del backend con RESTAPIs en SpringBoot para Zippy. Funciona con tokens de autenticación, roles y endpoints que satisfacen la logica del negocio. 
+Desarrollo del backend con RESTAPIs en SpringBoot para Zippy. 
 
+Entre sus principales funciones se destaca:
+
+- Autenticación con Tokens
+- Roles
+- Endpoints que satisfacen la logica del negocio.
+
+
+
+  
 ## ¿Qué es "Zippy"?
 
 ### Misión
