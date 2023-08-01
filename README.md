@@ -24,6 +24,110 @@ Se trabaja en base a las siguientes entidades que se representan una colección 
 - Credential
 - Refresh token
 
+Cada uno de ellos cuenta con su respectivo repository (extiende MongoRepository), service (se programa toda la logica) y rest (endpoints).
+
+## Endpoints
+
+A continuación la documentación de los principales endpoints:
+
+### Trip
+
+#### ruta principal: /api/trip
+
+##### get
+- /getTrip/{tripId}
+  <br><br>
+  Requiere token de acceso.
+  <br>
+  Descripción: Permite obtener la información de un viaje.
+
+- /getAllUserTrips/{userId}
+  <br><br>
+  Requiere token de acceso.
+  <br>
+  Descripción: Permite obtener todos los viajes de un usuario.
+
+##### post
+
+- /startNewTrip
+  <br><br>
+  Requiere token de acceso
+  <br>
+  Descripción: Permite iniciar un nuevo viaje. El viaje se inicia al usuario del token de acceso.
+  <br>
+  Requiere en el cuerpo: ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, BigDecimal distance, int duration.
+  <br>
+  Condiciones: El usuario no puede tener un viaje activo ni reservado, el vehiculo debe estar disponible y las estaciones deben existir.
+  
+- /reserveTrip
+  <br><br>
+  Requiere token de acceso
+  <br>
+  Descripción: Permite reservar un viaje. El viaje se reserva al usuario del token de acceso.
+  <br>
+  Requiere en el cuerpo: ObjectId vehicleId, ObjectId startStationId, ObjectId endStationId, BigDecimal distance, int duration.
+  <br>
+  Condiciones: El usuario no puede tener un viaje activo ni reservado, el vehiculo debe estar disponible y las estaciones deben existir.
+  
+  
+##### put
+- /startReserveTrip/{tripDuration}
+  <br><br>
+  Requiere token de acceso
+  <br>
+  Descripción: Permite iniciar un viaje que ya se encuentra en estado reservado por el usuario del token de acceso.
+  <br>
+  Requiere la duración del viaje como path variable.
+  <br>
+  Condiciones: El usuario debe tener un viaje reservado.
+
+-/cancelReserveTrip
+  <br><br>
+  Requiere token de acceso
+  <br>
+  Descripción: Permite cancelar el viaje reservado previamente por el usuario del token de acceso.
+  <br>
+  Condiciones: El usuario debe tener un viaje reservado.
+
+-/endActualTrip
+  <br><br>
+  Requiere token de acceso
+  <br>
+  Descripción: Permite terminar el viaje del usuario del token de acceso
+  <br>
+  Condiciones: El usuario debe tener un viaje activo.
+  <br>
+  Opcional: Se le puede pasar en el cuerpo Integer userRating y String userComment.
+
+
+### User
+
+#### ruta principal: /api/user
+
+##### put
+- /update/{id}
+  <br><br>
+  Requiere token de acceso
+  <br>
+  Descripción: Permite actualizar los datos personales de un usuario (no se incluye las credenciales de inicio de sesión).
+  <br>
+  Requiere en el cuerpo: String email, String phone, Address address, String occupation.
+  
+##### get
+- /{id}
+  <br><br>
+  Requiere token de acceso.
+  <br>
+  Descripción: Permite obtener la información del usuario correspondiente al id del path variable.
+  Condiciones: El id del usuario del token de acceso debe coincidir con el id del path varible.
+  
+##### delete
+- /delete/{id}
+  <br><br>
+  Requiere token de acceso.
+  <br>
+  Descripción: Permite borrar de forma permanente un usuario.
+  Condiciones: El id del usuario del token de acceso debe coincidir con el id del path varible.
 
 
 ## ¿Qué es "Zippy"?
